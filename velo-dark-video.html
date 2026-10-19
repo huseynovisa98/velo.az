@@ -7,10 +7,10 @@
   <meta name="description" content="VELO.az — velosipedlər, aksesuarlar, ehtiyat hissələri, 24/7 servis və kirayə. 1998-ci ildən Azərbaycanda hərəkətin yeni səviyyəsi.">
   <title>VELO.az — Hərəkətin Yeni Səviyyəsi | Premium Redizayn</title>
 
-  <!-- Google Fonts: Syne & Inter -->
+  <!-- Google Fonts: Plus Jakarta Sans (Başlıqlar & Vurğular - Tam Azərbaycan Latin ə, Ə, ı, İ, ş, ç, ğ, ö, ü dəstəyi) & Inter (Əsas mətn & UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- GSAP & ScrollTrigger Libraries with defer for performance -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
@@ -40,7 +40,7 @@
       --radius-md: 16px;
       --radius-lg: 24px;
       --radius-pill: 9999px;
-      --font-heading: 'Syne', -apple-system, sans-serif;
+      --font-heading: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
@@ -94,11 +94,13 @@
       cursor: pointer;
     }
 
-    h1, h2, h3, h4, .font-syne {
+    h1, h2, h3, h4, .font-syne, .font-heading, .font-display {
       font-family: var(--font-heading);
-      letter-spacing: -0.04em;
-      line-height: 1.1;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
       font-weight: 800;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
 
     .tabular-nums {
@@ -678,6 +680,7 @@
       gap: 14px;
     }
 
+    /* Fix: .cat is an <a> tag! Must be display: flex or display: block */
     a.cat {
       display: flex;
       flex-direction: column;
@@ -1373,12 +1376,15 @@
     /* ==========================================================================
        15. GSAP ANIMATION PRESETS & BULLETPROOF VISIBILITY FALLBACK
        ========================================================================== */
+    /* By default, elements are completely visible. Only when JavaScript initializes
+       do we apply smooth scroll animations. This prevents the "blank screen" bug! */
     .reveal {
       opacity: 1;
       transform: none;
       transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    /* When animated via JS */
     .has-motion .reveal-init {
       opacity: 0;
       transform: translateY(22px);
@@ -1556,14 +1562,18 @@
 </head>
 <body>
 
-  <!-- 1. Background Video -->
+  <!-- ========================================================================
+       1. FIXED BACKGROUND VIDEO & OVERLAY
+       ======================================================================== -->
   <video class="video-bg" id="backgroundVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true">
     <source src="https://res.cloudinary.com/duuymckft/video/upload/v1792405275/ipaxgku2tgjo5siqbnxw.mp4" type="video/mp4">
   </video>
   <div class="video-overlay" aria-hidden="true"></div>
 
   <div class="site">
-    <!-- Top Announcement Bar -->
+    <!-- ======================================================================
+         2. TOP ANNOUNCEMENT BAR
+         ====================================================================== -->
     <div class="topline">
       <div class="wrap inner">
         <span class="topline-badge">
@@ -1576,7 +1586,9 @@
       </div>
     </div>
 
-    <!-- Sticky Navigation Header -->
+    <!-- ======================================================================
+         3. STICKY HEADER & NAVIGATION
+         ====================================================================== -->
     <header class="site-header" id="siteHeader">
       <div class="wrap" style="width: 100%;">
         <nav class="nav" aria-label="Əsas menyu">
@@ -1614,9 +1626,10 @@
       </div>
     </header>
 
-    <!-- Main Content -->
+    <!-- ======================================================================
+         4. HERO SECTION
+         ====================================================================== -->
     <main id="top">
-      <!-- Hero -->
       <section class="wrap hero">
         <div class="hero-copy">
           <div class="eyebrow">
@@ -1654,7 +1667,9 @@
         </div>
       </section>
 
-      <!-- Bento-Grid Ekosistem -->
+      <!-- ======================================================================
+           5. BENTO-GRID EKOSİSTEM (MÜHƏNDİSLİK, MTB & 24/7 SERVİS)
+           ====================================================================== -->
       <section class="section" id="ekosistem">
         <div class="wrap">
           <div class="section-head reveal">
@@ -1748,7 +1763,9 @@
         </div>
       </section>
 
-      <!-- Kateqoriyalar (#kateqoriyalar) -->
+      <!-- ======================================================================
+           6. KATEQORİYALAR BÖLMƏSİ (#kateqoriyalar)
+           ====================================================================== -->
       <section class="section" id="kateqoriyalar">
         <div class="wrap">
           <div class="section-head reveal">
@@ -1762,6 +1779,7 @@
           </div>
 
           <div class="category-grid">
+            <!-- 1. Dağ / MTB -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=1_11&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'mtb')">
               <div class="cat-head">
                 <div class="symbol">⌁</div>
@@ -1773,6 +1791,7 @@
               </div>
             </a>
 
+            <!-- 2. Şəhər -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=12&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'seher')">
               <div class="cat-head">
                 <div class="symbol">↗</div>
@@ -1784,6 +1803,7 @@
               </div>
             </a>
 
+            <!-- 3. Elektro velosipedlər -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=1_17&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'elektro')">
               <div class="cat-head">
                 <div class="symbol">ϟ</div>
@@ -1795,6 +1815,7 @@
               </div>
             </a>
 
+            <!-- 4. Uşaq velosipedləri -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=1_13&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'usaq')">
               <div class="cat-head">
                 <div class="symbol">◉</div>
@@ -1806,6 +1827,7 @@
               </div>
             </a>
 
+            <!-- 5. Qadın velosipedləri -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=1_12&route=product/category" target="_blank" rel="noopener">
               <div class="cat-head">
                 <div class="symbol">◌</div>
@@ -1817,6 +1839,7 @@
               </div>
             </a>
 
+            <!-- 6. Qatlanan -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=1_14&route=product/category" target="_blank" rel="noopener">
               <div class="cat-head">
                 <div class="symbol">⤢</div>
@@ -1828,6 +1851,7 @@
               </div>
             </a>
 
+            <!-- 7. Şosse velosipedləri -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=1_15&route=product/category" target="_blank" rel="noopener">
               <div class="cat-head">
                 <div class="symbol">⌁</div>
@@ -1839,6 +1863,7 @@
               </div>
             </a>
 
+            <!-- 8. Üç təkərli -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=1_16&route=product/category" target="_blank" rel="noopener">
               <div class="cat-head">
                 <div class="symbol">◉</div>
@@ -1850,6 +1875,7 @@
               </div>
             </a>
 
+            <!-- 9. Fat Bike -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=1_18&route=product/category" target="_blank" rel="noopener">
               <div class="cat-head">
                 <div class="symbol">✳</div>
@@ -1861,6 +1887,7 @@
               </div>
             </a>
 
+            <!-- 10. BMX Free Ride -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=1_19&route=product/category" target="_blank" rel="noopener">
               <div class="cat-head">
                 <div class="symbol">⚡</div>
@@ -1872,6 +1899,7 @@
               </div>
             </a>
 
+            <!-- 11. Aksesuarlar -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=2&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'aksesuar')">
               <div class="cat-head">
                 <div class="symbol">＋</div>
@@ -1883,6 +1911,7 @@
               </div>
             </a>
 
+            <!-- 12. Ehtiyat hissələri -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=3&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'hisse')">
               <div class="cat-head">
                 <div class="symbol">⚙</div>
@@ -1894,6 +1923,7 @@
               </div>
             </a>
 
+            <!-- 13. Skuter / Skeytbord / Rolik -->
             <a class="glass cat reveal" href="https://velo.az/index.php?path=4&route=product/category" target="_blank" rel="noopener">
               <div class="cat-head">
                 <div class="symbol">↝</div>
@@ -1905,6 +1935,7 @@
               </div>
             </a>
 
+            <!-- 14. Endirimli məhsullar -->
             <a class="glass cat reveal" href="https://velo.az/index.php?route=product/special" target="_blank" rel="noopener">
               <div class="cat-head">
                 <div class="symbol">%</div>
@@ -1916,6 +1947,7 @@
               </div>
             </a>
 
+            <!-- 15. Outlet -->
             <a class="glass cat reveal" href="https://velo.az/index.php?route=product/special" target="_blank" rel="noopener">
               <div class="cat-head">
                 <div class="symbol">◈</div>
@@ -1927,6 +1959,7 @@
               </div>
             </a>
 
+            <!-- 16. Digər məhsullar -->
             <a class="glass cat reveal" href="https://velo.az/" target="_blank" rel="noopener">
               <div class="cat-head">
                 <div class="symbol">⋯</div>
@@ -1941,7 +1974,9 @@
         </div>
       </section>
 
-      <!-- Məhsullar (#mehsullar) -->
+      <!-- ======================================================================
+           7. MƏHSULLAR BÖLMƏSİ (#mehsullar)
+           ====================================================================== -->
       <section class="section" id="mehsullar">
         <div class="wrap">
           <div class="section-head reveal">
@@ -1954,6 +1989,7 @@
             </p>
           </div>
 
+          <!-- Interactive Search & Filter Toolbar -->
           <div class="catalog-toolbar reveal">
             <div class="search-box">
               <span class="search-icon">🔍</span>
@@ -1971,7 +2007,10 @@
             </div>
           </div>
 
-          <div class="product-grid" id="productGridContainer"></div>
+          <!-- Product Grid rendered with high-fidelity items -->
+          <div class="product-grid" id="productGridContainer">
+            <!-- Rendered dynamically by JavaScript with authentic VELO.az catalog entries -->
+          </div>
 
           <div class="glass catalog-note reveal">
             <p>
@@ -1987,7 +2026,9 @@
         </div>
       </section>
 
-      <!-- Boy Kalkulyatoru (#kalkulyator) -->
+      <!-- ======================================================================
+           8. BOY VƏ ÇƏRÇİVƏ ÖLÇÜSÜ KALKULYATORU (#kalkulyator)
+           ====================================================================== -->
       <section class="section" id="kalkulyator">
         <div class="wrap">
           <div class="section-head reveal" style="text-align: center; justify-content: center;">
@@ -2030,7 +2071,9 @@
         </div>
       </section>
 
-      <!-- Haqqımızda & Servis (#haqqimizda, #servis) -->
+      <!-- ======================================================================
+           9. HAQQIMIZDA VƏ SERVİS XİDMƏTİ (#haqqimizda, #servis)
+           ====================================================================== -->
       <section class="section" id="haqqimizda">
         <div class="wrap">
           <div class="section-head reveal">
@@ -2089,7 +2132,9 @@
         </div>
       </section>
 
-      <!-- Mağazalar (#magazalar) -->
+      <!-- ======================================================================
+           10. MAĞAZALAR (#magazalar)
+           ====================================================================== -->
       <section class="section" id="magazalar">
         <div class="wrap">
           <div class="section-head reveal">
@@ -2103,6 +2148,7 @@
           </div>
 
           <div class="store-grid">
+            <!-- Mağaza 1 -->
             <article class="glass store-card reveal">
               <div>
                 <div class="kicker">Mağaza 01</div>
@@ -2118,6 +2164,7 @@
               </div>
             </article>
 
+            <!-- Mağaza 2 -->
             <article class="glass store-card reveal">
               <div>
                 <div class="kicker">Mağaza 02</div>
@@ -2133,6 +2180,7 @@
               </div>
             </article>
 
+            <!-- Diler 1: Velosport -->
             <article class="glass store-card reveal">
               <div>
                 <div class="kicker">Diler</div>
@@ -2148,6 +2196,7 @@
               </div>
             </article>
 
+            <!-- Diler 2: Velotrek -->
             <article class="glass store-card reveal">
               <div>
                 <div class="kicker">Diler</div>
@@ -2163,6 +2212,7 @@
               </div>
             </article>
 
+            <!-- Kirayə -->
             <article class="glass store-card reveal">
               <div>
                 <div class="kicker">Kirayə</div>
@@ -2176,6 +2226,7 @@
               </div>
             </article>
 
+            <!-- Korporativ -->
             <article class="glass store-card reveal">
               <div>
                 <div class="kicker">Korporativ</div>
@@ -2196,7 +2247,9 @@
         </div>
       </section>
 
-      <!-- Əlaqə (#elaqe) -->
+      <!-- ======================================================================
+           11. ƏLAQƏ BÖLMƏSİ (#elaqe)
+           ====================================================================== -->
       <section class="section" id="elaqe">
         <div class="wrap">
           <div class="glass contact-panel reveal">
@@ -2247,7 +2300,9 @@
       </section>
     </main>
 
-    <!-- Footer -->
+    <!-- ======================================================================
+         12. FOOTER
+         ====================================================================== -->
     <footer class="footer">
       <div class="wrap">
         <div class="footer-top">
@@ -2276,7 +2331,9 @@
     </footer>
   </div>
 
-  <!-- Cart Slide-Over Drawer -->
+  <!-- ========================================================================
+       13. INTERACTIVE CART DRAWER
+       ======================================================================== -->
   <div class="cart-drawer-overlay" id="cartDrawerOverlay" onclick="toggleCartDrawer(false)">
     <div class="cart-drawer" onclick="event.stopPropagation()">
       <div>
@@ -2285,7 +2342,9 @@
           <button class="cart-close-btn" onclick="toggleCartDrawer(false)" aria-label="Bağla">✕</button>
         </div>
 
-        <div class="cart-items-wrap" id="cartItemsList"></div>
+        <div class="cart-items-wrap" id="cartItemsList">
+          <!-- Rendered dynamically -->
+        </div>
       </div>
 
       <div class="cart-footer">
@@ -2304,7 +2363,11 @@
     </div>
   </div>
 
+  <!-- ========================================================================
+       14. ROBUST JAVASCRIPT ENGINE & VISUAL LOGIC
+       ======================================================================== -->
   <script>
+    // Authentic catalog data matching all real velo.az products
     const CATALOG_PRODUCTS = [
       {
         id: 'chempion-12-sport',
@@ -2392,13 +2455,18 @@
     let currentSearchQuery = '';
     let shoppingCart = [];
 
+    // Initialize cart from localStorage if present
     try {
       const savedCart = localStorage.getItem('velo_az_demo_cart');
-      if (savedCart) shoppingCart = JSON.parse(savedCart);
+      if (savedCart) {
+        shoppingCart = JSON.parse(savedCart);
+      }
     } catch (e) {}
 
+    // Set Copyright Year
     document.getElementById('currentYear').textContent = new Date().getFullYear();
 
+    // Render Product Grid
     function renderProductGrid() {
       const container = document.getElementById('productGridContainer');
       if (!container) return;
@@ -2453,31 +2521,44 @@
       `).join('');
     }
 
+    // Filter by Category Button
     function filterCatalogCategory(category) {
       currentFilter = category;
+
+      // Update button visual states
       document.querySelectorAll('#categoryFilterPills .filter-pill').forEach(btn => {
         btn.classList.toggle('active', btn.getAttribute('data-filter') === category);
       });
+
       renderProductGrid();
-      const el = document.getElementById('mehsullar');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
+
+      // Smooth scroll to catalog section
+      const catalogSection = document.getElementById('mehsullar');
+      if (catalogSection) {
+        catalogSection.scrollIntoView({ behavior: 'smooth' });
+      }
     }
 
+    // Direct filter click from Kateqoriyalar cards
     function highlightFilter(event, category) {
+      // If user holds Ctrl/Cmd or wants to open real link, let it work, else filter locally
       if (!event.ctrlKey && !event.metaKey && window.innerWidth > 600) {
         event.preventDefault();
         filterCatalogCategory(category);
       }
     }
 
+    // Search bar listener
     function handleCatalogSearch(query) {
       currentSearchQuery = query;
       renderProductGrid();
     }
 
+    // Cart Operations
     function addToCart(productId) {
       const product = CATALOG_PRODUCTS.find(p => p.id === productId);
       if (!product) return;
+
       shoppingCart.push(product);
       saveCart();
       updateCartUI();
@@ -2499,6 +2580,7 @@
     function toggleCartDrawer(forceOpen) {
       const overlay = document.getElementById('cartDrawerOverlay');
       if (!overlay) return;
+
       if (forceOpen === true) {
         overlay.classList.add('active');
       } else if (forceOpen === false) {
@@ -2512,10 +2594,12 @@
       const badge = document.getElementById('cartBadgeCount');
       const list = document.getElementById('cartItemsList');
       const total = document.getElementById('cartTotalPrice');
+
       if (badge) badge.textContent = shoppingCart.length;
 
       const sum = shoppingCart.reduce((acc, item) => acc + item.price, 0);
       if (total) total.textContent = sum.toFixed(2) + ' ₼';
+
       if (!list) return;
 
       if (shoppingCart.length === 0) {
@@ -2544,13 +2628,16 @@
         alert('Səbətiniz boşdur! Zəhmət olmasa əvvəlcə məhsul seçin.');
         return;
       }
+
       const sum = shoppingCart.reduce((acc, item) => acc + item.price, 0);
       const itemsList = shoppingCart.map((item, i) => `${i + 1}. ${item.name} (${item.price.toFixed(2)} ₼)`).join('\n');
       const message = `Salam VELO.az! Redizayn platformasından sifariş göndərirəm:\n\n${itemsList}\n\nCəmi: ${sum.toFixed(2)} AZN\nÇatdırılma və sifarişi dəqiqləşdirmək üçün əlaqə saxlamağınızı xahiş edirəm.`;
+
       const waUrl = `https://wa.me/994703129549?text=${encodeURIComponent(message)}`;
       window.open(waUrl, '_blank');
     }
 
+    // Bike Frame Size Calculator
     function calculateBikeSize(heightVal) {
       const h = parseInt(heightVal, 10);
       const display = document.getElementById('heightSliderValue');
@@ -2559,6 +2646,7 @@
       const wheelEl = document.getElementById('calcWheelSize');
 
       if (display) display.textContent = `${h} sm`;
+
       let frameName = 'M (Medium)';
       let frameInch = '17" - 18" (43 - 47 sm)';
       let wheelSize = '29 düym';
@@ -2590,6 +2678,7 @@
       if (wheelEl) wheelEl.textContent = wheelSize;
     }
 
+    // Mobile Hamburger Menu Toggle
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
 
@@ -2600,6 +2689,7 @@
         menuToggle.textContent = isOpen ? '✕' : '☰';
       });
 
+      // Close menu when clicking any nav link
       navLinks.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', () => {
           navLinks.classList.remove('open');
@@ -2609,6 +2699,7 @@
       });
     }
 
+    // Sticky Header visual border switch on scroll
     window.addEventListener('scroll', () => {
       const header = document.getElementById('siteHeader');
       if (header) {
@@ -2616,15 +2707,18 @@
       }
     }, { passive: true });
 
+    // GSAP ScrollTrigger & Bulletproof Motion Engine
     function initMotion() {
       const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (isReduced) return;
 
       const bgVideo = document.getElementById('backgroundVideo');
 
+      // Check if GSAP loaded from CDN
       if (window.gsap && window.ScrollTrigger) {
         gsap.registerPlugin(ScrollTrigger);
 
+        // GSAP smooth parallax scale, opacity dim, and blur effect during scroll
         if (bgVideo) {
           gsap.to(bgVideo, {
             scale: 1.20,
@@ -2640,6 +2734,7 @@
           });
         }
 
+        // Section header and card reveals
         gsap.utils.toArray('.reveal').forEach(el => {
           gsap.fromTo(el, 
             { opacity: 0.2, y: 18 },
@@ -2658,6 +2753,7 @@
           );
         });
       } else {
+        // Fallback if GSAP is unavailable
         const onScrollFallback = () => {
           const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
           const scrollPct = Math.min(1, window.scrollY / maxScroll);
@@ -2681,22 +2777,28 @@
       }
     }
 
+    // Initialize application immediately on DOMContentLoaded
     document.addEventListener('DOMContentLoaded', () => {
       renderProductGrid();
       updateCartUI();
       calculateBikeSize(175);
 
+      // Safe video playback handler
       const video = document.getElementById('backgroundVideo');
       if (video) {
         const playPromise = video.play();
         if (playPromise && playPromise.catch) {
-          playPromise.catch(() => {});
+          playPromise.catch(() => {
+            // Autoplay blocked by browser policy; stays muted
+          });
         }
       }
 
+      // Initialize motion safely
       initMotion();
     });
 
+    // Hash anchor scroll compensation
     if (window.location.hash) {
       setTimeout(() => {
         const target = document.querySelector(window.location.hash);

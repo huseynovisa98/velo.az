@@ -7,10 +7,10 @@
   <meta name="description" content="VELO.az — velosipedlər, aksesuarlar, ehtiyat hissələri, 24/7 servis və kirayə. 1998-ci ildən Azərbaycanda hərəkətin yeni səviyyəsi.">
   <title>VELO.az — Hərəkətin Yeni Səviyyəsi</title>
 
-  <!-- Google Fonts: Syne (başlıqlar) & Inter (əsas mətn) -->
+  <!-- Google Fonts: Plus Jakarta Sans (Başlıqlar & Vurğular - Tam Azərbaycan Latin ə, Ə, ı, İ, ş, ç, ğ, ö, ü dəstəyi) & Inter (Əsas mətn & UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- GSAP & ScrollTrigger CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
@@ -40,7 +40,7 @@
       --radius-md: 16px;
       --radius-lg: 24px;
       --radius-pill: 9999px;
-      --font-heading: 'Syne', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-heading: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
@@ -91,11 +91,13 @@
       cursor: pointer;
     }
 
-    h1, h2, h3, h4, .font-syne {
+    h1, h2, h3, h4, .font-syne, .font-heading, .font-display {
       font-family: var(--font-heading);
-      letter-spacing: -0.04em;
-      line-height: 1.1;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
       font-weight: 800;
+      text-rendering: optimizeLegibility;
+      font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
 
     .tabular-nums {
