@@ -1,0 +1,6 @@
+{
+  "name": "velo.az - Müasir Velosiped Mağazası Prototipi",
+  "description": "Azərbaycanın velosiped və aksessuar mağazası velo.az üçün müasir, premium, sürətli və mobil uyğunlaşdırılmış e-ticarət veb platforma prototipi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

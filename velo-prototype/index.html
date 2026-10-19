@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>velo.az — Premium Velosiped & E-Mobility Baku</title>
+  <meta name="description" content="Azərbaycanın velosiped və e-mobility mağazası velo.az üçün tünd rejimli (#0A0D12) və fon video effektli müasir tək-fayllı platforma.">
+
+  <!-- 4. Google Fonts: "Syne" (bold redaksiya başlıqları) və "Inter" (mətnlər) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <!-- 7. GSAP & ScrollTrigger CDN Kitabxanaları -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root {
+      --bg-dark: #0A0D12;
+      --card-graphite: #141A22;
+      --accent-lemon: #CCFF00;
+      --accent-lemon-hover: #b8e600;
+      --text-main: #FFFFFF;
+      --text-muted: #9CA3AF;
+      --border-glass: rgba(255, 255, 255, 0.1);
+      --border-lemon: rgba(204, 255, 0, 0.35);
+      --font-heading: 'Syne', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      selection-background-color: var(--accent-lemon);
+      selection-color: var(--bg-dark);
+    }
+
+    ::selection {
+      background-color: var(--accent-lemon);
+      color: var(--bg-dark);
+    }
+
+    h1, h2, h3, h4, .font-syne {
+      font-family: var(--font-heading);
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* 1 & 2. Fixed Fullscreen Background Video */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      object-fit: cover;
+      transform-origin: center center;
+      will-change: transform;
+    }
+
+    /* 3. Dark Overlay with strictly pointer-events: none */
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 25%, rgba(10, 13, 18, 0.65) 0%, rgba(10, 13, 18, 0.88) 65%, rgba(10, 13, 18, 0.98) 100%);
+    }
+
+    /* Layout Containers */
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(10, 13, 18, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-glass);
+      height: 80px;
+      display: flex;
+      align-items: center;
+    }
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      background: var(--accent-lemon);
+      color: var(--bg-dark);
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.3rem;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .brand-text {
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 1.6rem;
+      letter-spacing: -0.03em;
+    }
+    .brand-text span {
+      color: var(--accent-lemon);
+    }
+
+    nav {
+      display: flex;
+      gap: 2rem;
+    }
+    nav a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    nav a:hover {
+      color: var(--accent-lemon);
+    }
+
+    .header-btns {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .btn-lemon {
+      background: var(--accent-lemon);
+      color: var(--bg-dark);
+      font-family: var(--font-heading);
+      font-weight: 800;
+      padding: 0.65rem 1.25rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(204, 255, 0, 0.25);
+    }
+    .btn-lemon:hover {
+      background: var(--accent-lemon-hover);
+      transform: translateY(-1px);
+    }
+    .btn-glass {
+      background: rgba(20, 26, 34, 0.8);
+      color: #fff;
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(8px);
+      padding: 0.65rem 1.1rem;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-glass:hover {
+      border-color: var(--border-lemon);
+      color: var(--accent-lemon);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 5rem 0 4rem;
+      position: relative;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      border-radius: 9999px;
+      background: rgba(20, 26, 34, 0.9);
+      border: 1px solid var(--border-lemon);
+      color: var(--accent-lemon);
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-size: clamp(2.75rem, 5.5vw, 5.25rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      text-wrap: balance;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(90deg, #CCFF00 0%, #a3e635 50%, #ffffff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      color: #D1D5DB;
+      font-size: 1.125rem;
+      max-width: 620px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    /* 6. Bento-Grid with 3 Glassmorphic Blur Cards (#141A22) */
+    .bento-section {
+      padding: 4rem 0 6rem;
+    }
+    .section-title-wrap {
+      text-align: center;
+      max-width: 650px;
+      margin: 0 auto 3.5rem;
+    }
+    .section-subtitle {
+      color: var(--accent-lemon);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .section-title {
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.75rem;
+    }
+
+    /* Glassmorphic Bento Cards */
+    .bento-card {
+      background: rgba(20, 26, 34, 0.85);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: 28px;
+      padding: 2.25rem;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.35s ease;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+    }
+    .bento-card:hover {
+      border-color: rgba(204, 255, 0, 0.5);
+      transform: translateY(-4px);
+      box-shadow: 0 25px 50px -12px rgba(204, 255, 0, 0.15);
+    }
+
+    .bento-card-1 {
+      grid-column: span 7;
+    }
+    .bento-card-2 {
+      grid-column: span 5;
+    }
+    .bento-card-3 {
+      grid-column: span 12;
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(204, 255, 0, 0.15);
+      border: 1px solid var(--border-lemon);
+      color: var(--accent-lemon);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .card-tag {
+      font-family: monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--accent-lemon);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+    .card-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.85rem;
+      color: #ffffff;
+    }
+    .card-desc {
+      color: #9CA3AF;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      margin-bottom: 1.75rem;
+    }
+
+    /* Metric Counters */
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      background: rgba(10, 13, 18, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 1.25rem;
+      border-radius: 18px;
+      margin-bottom: 1.5rem;
+    }
+    .metric-val {
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--accent-lemon);
+    }
+    .metric-label {
+      font-size: 0.75rem;
+      color: #9CA3AF;
+      display: block;
+      margin-top: 0.2rem;
+    }
+
+    .card-list {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+    .card-list li {
+      font-size: 0.875rem;
+      color: #D1D5DB;
+      margin-bottom: 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .card-list li::before {
+      content: "•";
+      color: var(--accent-lemon);
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+
+    /* Catalog Section */
+    .catalog-section {
+      padding: 5rem 0;
+      background: rgba(10, 13, 18, 0.75);
+      border-top: 1px solid var(--border-glass);
+      backdrop-filter: blur(12px);
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.75rem;
+      margin-top: 2.5rem;
+    }
+    .product-card {
+      background: rgba(20, 26, 34, 0.9);
+      border: 1px solid var(--border-glass);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s;
+    }
+    .product-card:hover {
+      border-color: var(--border-lemon);
+      transform: translateY(-4px);
+    }
+    .product-img {
+      width: 100%;
+      aspect-ratio: 4/3;
+      object-fit: cover;
+      background: #000;
+    }
+    .product-info {
+      padding: 1.25rem;
+    }
+    .product-name {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+    .product-price {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--accent-lemon);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-glass);
+      background: #06080b;
+      padding: 3rem 0;
+      color: #6B7280;
+      font-size: 0.85rem;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 900px) {
+      .bento-card-1, .bento-card-2 {
+        grid-column: span 12;
+      }
+      .bento-card-3 {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      nav {
+        display: none;
+      }
+      .metric-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1 & 2. Background Video with fixed position, strictly autoplay muted loop playsinline -->
+  <video id="bg-video" autoplay muted loop playsinline>
+    <source src="https://res.cloudinary.com/duuymckft/video/upload/v1792405275/ipaxgku2tgjo5siqbnxw.mp4" type="video/mp4">
+  </video>
+
+  <!-- 3. Dark Overlay with strictly pointer-events: none -->
+  <div class="video-overlay"></div>
+
+  <!-- Header -->
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <a href="#" class="brand">
+          <div class="brand-logo">v</div>
+          <div class="brand-text">velo<span>.az</span></div>
+        </a>
+
+        <nav>
+          <a href="#ekosistem">Ekosistem</a>
+          <a href="#kataloq">Kataloq</a>
+          <a href="#servis">24/7 Servis</a>
+          <a href="#elaqe">Bakı Filialı</a>
+        </nav>
+
+        <div class="header-btns">
+          <a href="https://wa.me/994508802525?text=Salam%20velo.az%2C%20velosiped%20seçimində%20kömək%20istəyirəm" target="_blank" class="btn-lemon">
+            WhatsApp Dəstək
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Hero Content -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <span>●</span> Bakı E-Mobility & Cycling
+      </div>
+      <h1>
+        Yolunu Seç, <br>
+        <span class="highlight">Sürətini Artır.</span>
+      </h1>
+      <p>
+        Xəzər sahilindən dağ marşrutlarına qədər — 85Nm torklu E-Bike modelləri, monokok karbon gövdələr və 24/7 ekspres mobil usta xidməti ilə.
+      </p>
+      <div class="hero-actions">
+        <a href="#kataloq" class="btn-lemon">Kataloqa Keçid</a>
+        <a href="#servis" class="btn-glass">24/7 Usta Çağır</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. Bento-Grid Structure (3 Glassmorphic Cards) -->
+  <section id="ekosistem" class="bento-section">
+    <div class="container">
+      <div class="section-title-wrap">
+        <span class="section-subtitle">Mühəndislik & Texnologiya</span>
+        <h2 class="section-title">velo.az Ekosistemi</h2>
+      </div>
+
+      <div class="bento-grid">
+        
+        <!-- Bento Card 1: "E-Bike Power" (Batareya məsafəsi və güc) -->
+        <div class="bento-card bento-card-1">
+          <div>
+            <div class="card-icon">⚡</div>
+            <span class="card-tag">Smart E-Mobility</span>
+            <h3 class="card-title">E-Bike Power</h3>
+            <p class="card-desc">
+              Bakının təpəli relyefi və güclü küləyi üçün xüsusi kalibrasiya edilmiş yüksək fırlanma anı. 
+              İnteqrasiya olunmuş Samsung Li-ion hüceyrələri ilə bir şarjla bütün şəhəri fəth edin.
+            </p>
+
+            <div class="metric-row">
+              <div>
+                <span class="metric-val tabular-nums">120<span style="font-size:0.9rem; color:#888;">km</span></span>
+                <span class="metric-label">Bir şarja məsafə</span>
+              </div>
+              <div>
+                <span class="metric-val tabular-nums">85<span style="font-size:0.9rem; color:#888;">Nm</span></span>
+                <span class="metric-label">Bafang / Bosch güc</span>
+              </div>
+              <div>
+                <span class="metric-val tabular-nums">750<span style="font-size:0.9rem; color:#888;">Wh</span></span>
+                <span class="metric-label">Samsung batareya</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.08); padding-top:1rem;">
+            <span style="font-size:0.8rem; color:#9CA3AF;">Eco / Tour / Turbo rejimləri</span>
+            <a href="#kataloq" style="color:var(--accent-lemon); font-weight:700; font-size:0.85rem; text-decoration:none;">E-Bike modelləri &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Bento Card 2: "MTB & Şəhər" (Karbon rama geometriyası) -->
+        <div class="bento-card bento-card-2">
+          <div>
+            <div class="card-icon">📐</div>
+            <span class="card-tag">Toray T800 Monokok</span>
+            <h3 class="card-title">MTB & Şəhər</h3>
+            <p class="card-desc">
+              Karbon rama geometriyası vibrasiyaları sönümləyir, daşlı enişlərdə möhkəmlik və şəhər asfaltında aerodinamik sürət bəxş edir.
+            </p>
+
+            <ul class="card-list">
+              <li>Ultra-yüngül çəki (cəmi <strong>8.4 kq</strong>)</li>
+              <li>100% daxili kabel çəkilişi</li>
+              <li>RockShox pnevmatik asqı</li>
+              <li>29" & 28" təkər klirensi</li>
+            </ul>
+          </div>
+
+          <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.08); padding-top:1rem;">
+            <span style="font-size:0.8rem; color:#9CA3AF;">Aero & Trail Geometriya</span>
+            <a href="#kataloq" style="color:var(--accent-lemon); font-weight:700; font-size:0.85rem; text-decoration:none;">Kataloqa Bax &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Bento Card 3: "24/7 Servis" (Təcili usta və icarə) -->
+        <div class="bento-card bento-card-3" id="servis">
+          <div style="flex: 1;">
+            <div style="display:flex; align-items:center; gap:0.75rem; margin-bottom:0.75rem;">
+              <div class="card-icon" style="margin-bottom:0; width:40px; height:40px; font-size:1.2rem;">🛠️</div>
+              <span class="card-tag" style="margin-bottom:0;">Ekspres Mobil Briqada · Bakı</span>
+            </div>
+            <h3 class="card-title" style="margin-bottom:0.5rem;">24/7 Servis & Təcili Usta</h3>
+            <p class="card-desc" style="margin-bottom:0; max-width:640px;">
+              Yolda təkəriniz deşildi və ya ötürücünüz sazlanmalıdır? Mobil servis maşınımız 30 dəqiqə ərzində ünvanınıza çatır. Həmçinin peşəkar test-drayv və icarə xidməti mövcuddur.
+            </p>
+          </div>
+
+          <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+            <a href="https://wa.me/994508802525?text=Salam%2C%20təcili%20velo-usta%20lazımdır" target="_blank" class="btn-lemon">
+              Təcili Usta Çağır
+            </a>
+            <a href="tel:+994508802525" class="btn-glass">
+              +994 (50) 880-25-25
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Catalog -->
+  <section id="kataloq" class="catalog-section">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem;">
+        <div>
+          <span class="section-subtitle">Kataloq</span>
+          <h2 class="section-title">Seçilmiş Modellər</h2>
+        </div>
+      </div>
+
+      <div class="product-grid">
+        <div class="product-card">
+          <img src="/src/assets/images/velo_mountain_bike_1792403936849.jpg" alt="Velo Peak Carbon" class="product-img">
+          <div class="product-info">
+            <span style="font-size:0.75rem; color:#9CA3AF; font-family:monospace;">MTB · 29" Təkər</span>
+            <h4 class="product-name">Velo Peak Carbon FS 29</h4>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.75rem;">
+              <span class="product-price tabular-nums">1 850 ₼</span>
+              <a href="https://wa.me/994508802525?text=Velo%20Peak%20Carbon%20haqqında%20sorğu" target="_blank" class="btn-lemon" style="padding:0.4rem 0.8rem; font-size:0.75rem;">Sifariş</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img src="/src/assets/images/velo_gravel_road_1792403937893.jpg" alt="Velo Strata Gravel" class="product-img">
+          <div class="product-info">
+            <span style="font-size:0.75rem; color:#9CA3AF; font-family:monospace;">Gravel · 28" (700x42c)</span>
+            <h4 class="product-name">Velo Strata Gravel All-Road</h4>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.75rem;">
+              <span class="product-price tabular-nums">2 290 ₼</span>
+              <a href="https://wa.me/994508802525?text=Velo%20Strata%20Gravel%20haqqında%20sorğu" target="_blank" class="btn-lemon" style="padding:0.4rem 0.8rem; font-size:0.75rem;">Sifariş</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-card">
+          <img src="/src/assets/images/velo_urban_ebike_1792403937467.jpg" alt="Velo Aurora E-Commuter" class="product-img">
+          <div class="product-info">
+            <span style="font-size:0.75rem; color:#9CA3AF; font-family:monospace;">E-Bike · 250W Mühərrik</span>
+            <h4 class="product-name">Velo Aurora E-Commuter</h4>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-top:0.75rem;">
+              <span class="product-price tabular-nums">1 980 ₼</span>
+              <a href="https://wa.me/994508802525?text=Velo%20Aurora%20E-Bike%20haqqında%20sorğu" target="_blank" class="btn-lemon" style="padding:0.4rem 0.8rem; font-size:0.75rem;">Sifariş</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="elaqe">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <div class="brand-text" style="font-size:1.3rem;">velo<span>.az</span></div>
+          <p style="margin-top:0.25rem;">Bakı şəhəri, Bülbül pr. 42 (Sahil m/s) · Tel: +994 (12) 490-25-25</p>
+        </div>
+        <p>© 2026 velo.az. Bütün hüquqlar qorunur. Tünd rejimli video fon versiyası.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 7. GSAP & ScrollTrigger Script: Videonun miqyasını (scale) scroll zamanı mülayim dəyişən skript -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+        gsap.registerPlugin(ScrollTrigger);
+
+        gsap.to("#bg-video", {
+          scale: 1.25,
+          opacity: 0.45,
+          filter: "blur(8px)",
+          ease: "none",
+          scrollTrigger: {
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1.5
+          }
+        });
+      }
+    });
+  </script>
+</body>
+</html>

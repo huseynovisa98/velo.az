@@ -1,0 +1,2810 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0A0D12">
+  <meta name="description" content="VELO.az — velosipedlər, aksesuarlar, ehtiyat hissələri, 24/7 servis və kirayə. 1998-ci ildən Azərbaycanda hərəkətin yeni səviyyəsi.">
+  <title>VELO.az — Hərəkətin Yeni Səviyyəsi | Premium Redizayn</title>
+
+  <!-- Google Fonts: Syne & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <!-- GSAP & ScrollTrigger Libraries with defer for performance -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+
+  <style>
+    /* ==========================================================================
+       1. CSS VARIABLES & SYSTEM ARCHITECTURE
+       ========================================================================== */
+    :root {
+      --bg: #0A0D12;
+      --panel: #141A22;
+      --panel-hover: #1A232E;
+      --panel-glass: rgba(20, 26, 34, 0.78);
+      --panel-glass-deep: rgba(14, 19, 26, 0.92);
+      --lime: #CCFF00;
+      --lime-glow: rgba(204, 255, 0, 0.35);
+      --lime-subtle: rgba(204, 255, 0, 0.12);
+      --white: #F4F6F8;
+      --muted: #A4AFBA;
+      --muted-dark: #6B7785;
+      --line: rgba(255, 255, 255, 0.12);
+      --line-bright: rgba(255, 255, 255, 0.22);
+      --line-lime: rgba(204, 255, 0, 0.45);
+      --max: min(1200px, calc(100% - 48px));
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --radius-pill: 9999px;
+      --font-heading: 'Syne', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    /* ==========================================================================
+       2. RESET & BASE ELEMENTS
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 96px;
+      background-color: var(--bg);
+      color-scheme: dark;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--white);
+      font-family: var(--font-body);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    ::selection {
+      background: var(--lime);
+      color: #0A0D12;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    button, input, select, textarea {
+      font-family: inherit;
+      font-size: inherit;
+      color: inherit;
+      border: none;
+      outline: none;
+      background: transparent;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    h1, h2, h3, h4, .font-syne {
+      font-family: var(--font-heading);
+      letter-spacing: -0.04em;
+      line-height: 1.1;
+      font-weight: 800;
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ==========================================================================
+       3. BACKGROUND VIDEO & ENHANCED OVERLAY
+       ========================================================================== */
+    .video-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+      transform: scale(1.02);
+      will-change: transform, opacity, filter;
+      background: radial-gradient(circle at 60% 40%, #17212e 0%, #0A0D12 100%);
+      pointer-events: none;
+    }
+
+    .video-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      /* Dual multi-stop gradient for cinematic contrast and text legibility */
+      background: 
+        linear-gradient(90deg, rgba(10, 13, 18, 0.94) 0%, rgba(10, 13, 18, 0.78) 50%, rgba(10, 13, 18, 0.65) 100%),
+        linear-gradient(180deg, rgba(10, 13, 18, 0.6) 0%, rgba(10, 13, 18, 0.2) 35%, rgba(10, 13, 18, 0.88) 75%, #0A0D12 100%);
+    }
+
+    .site {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+    }
+
+    .wrap {
+      width: var(--max);
+      margin: 0 auto;
+    }
+
+    /* ==========================================================================
+       4. TOP ANNOUNCEMENT BAR & STICKY HEADER
+       ========================================================================== */
+    .topline {
+      background: rgba(10, 13, 18, 0.95);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.76rem;
+      color: #B2BDC8;
+      position: relative;
+      z-index: 60;
+    }
+
+    .topline .inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 9px 0;
+      flex-wrap: wrap;
+    }
+
+    .topline-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--white);
+    }
+
+    .topline-badge strong {
+      color: var(--lime);
+      font-weight: 700;
+      font-family: monospace;
+    }
+
+    .topline a {
+      color: #DDE3EA;
+      transition: color 0.2s;
+    }
+
+    .topline a:hover {
+      color: var(--lime);
+    }
+
+    /* Sticky Navigation Header */
+    header.site-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(10, 13, 18, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--line);
+      height: 80px;
+      display: flex;
+      align-items: center;
+      transition: background 0.3s ease, border-color 0.3s ease;
+    }
+
+    header.site-header.scrolled {
+      background: rgba(10, 13, 18, 0.96);
+      border-bottom-color: var(--line-bright);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      gap: 20px;
+      position: relative;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-heading);
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      background: var(--lime);
+      color: #0A0D12;
+      border-radius: 9px;
+      font-size: 1.1rem;
+      font-weight: 900;
+      box-shadow: 0 0 18px var(--lime-glow);
+    }
+
+    .lime {
+      color: var(--lime);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #D4DAE0;
+    }
+
+    .nav-links a {
+      position: relative;
+      padding: 6px 0;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--lime);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--lime);
+      transition: width 0.25s ease;
+      border-radius: 2px;
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Primary and Secondary Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 11px 20px;
+      border-radius: var(--radius-pill);
+      background: var(--lime);
+      color: #0A0D12;
+      border: 1px solid var(--lime);
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 0.84rem;
+      line-height: 1;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: #d8ff26;
+      border-color: #d8ff26;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--lime-glow);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn.ghost {
+      background: rgba(20, 26, 34, 0.65);
+      border-color: var(--line);
+      color: var(--white);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn.ghost:hover {
+      border-color: var(--lime);
+      color: var(--lime);
+      background: rgba(204, 255, 0, 0.08);
+      box-shadow: none;
+    }
+
+    .btn-cart {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: var(--radius-pill);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      color: var(--white);
+      font-weight: 600;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+    }
+
+    .btn-cart:hover {
+      border-color: var(--lime);
+      color: var(--lime);
+    }
+
+    .cart-badge {
+      display: inline-grid;
+      place-items: center;
+      min-width: 20px;
+      height: 20px;
+      padding: 0 6px;
+      border-radius: var(--radius-pill);
+      background: var(--lime);
+      color: #0A0D12;
+      font-size: 0.72rem;
+      font-weight: 800;
+      font-family: monospace;
+    }
+
+    .menu-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 42px;
+      height: 42px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-sm);
+      color: var(--white);
+      font-size: 1.25rem;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+
+    .menu-toggle:hover {
+      border-color: var(--lime);
+      color: var(--lime);
+    }
+
+    /* ==========================================================================
+       5. HERO SECTION
+       ========================================================================== */
+    .hero {
+      min-height: 680px;
+      display: flex;
+      align-items: center;
+      padding: 80px 0 90px;
+      position: relative;
+    }
+
+    .hero-copy {
+      max-width: 760px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      background: rgba(204, 255, 0, 0.1);
+      border: 1px solid var(--line-lime);
+      color: var(--lime);
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      backdrop-filter: blur(8px);
+    }
+
+    .dot {
+      width: 7px;
+      height: 7px;
+      background: var(--lime);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--lime);
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    h1.hero-title {
+      font-size: clamp(3.2rem, 7.5vw, 6.4rem);
+      line-height: 0.94;
+      margin-bottom: 26px;
+      font-weight: 800;
+      letter-spacing: -0.06em;
+    }
+
+    h1.hero-title em {
+      font-style: normal;
+      color: var(--lime);
+      text-shadow: 0 0 45px rgba(204, 255, 0, 0.25);
+    }
+
+    .hero p {
+      max-width: 580px;
+      color: #C2CAD4;
+      line-height: 1.8;
+      font-size: 1.05rem;
+      font-weight: 400;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 36px;
+      margin-top: 50px;
+      padding-top: 28px;
+      border-top: 1px solid var(--line);
+    }
+
+    .stat strong {
+      display: block;
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 4px;
+    }
+
+    .stat strong span {
+      color: var(--lime);
+    }
+
+    .stat small {
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+
+    /* ==========================================================================
+       6. GLASSMORPHISM & BENTO-GRID EKOSİSTEM
+       ========================================================================== */
+    .glass {
+      background: linear-gradient(145deg, rgba(20, 26, 34, 0.88), rgba(12, 16, 22, 0.82));
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass:hover {
+      border-color: rgba(204, 255, 0, 0.38);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 25px rgba(204, 255, 0, 0.08);
+    }
+
+    .section {
+      padding: 88px 0;
+      position: relative;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 32px;
+      margin-bottom: 36px;
+    }
+
+    .kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--lime);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .section-head h2 {
+      font-size: clamp(2.3rem, 5vw, 3.8rem);
+      line-height: 0.98;
+      letter-spacing: -0.05em;
+    }
+
+    .section-head p {
+      max-width: 440px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    /* Bento Grid Ecosystem Layout */
+    .bento-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+      margin-top: 10px;
+    }
+
+    .bento-card {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bento-card-1 {
+      grid-column: span 7;
+      min-height: 380px;
+      background: radial-gradient(circle at 90% 10%, rgba(204, 255, 0, 0.08) 0%, rgba(20, 26, 34, 0.92) 70%);
+    }
+
+    .bento-card-2 {
+      grid-column: span 5;
+      min-height: 380px;
+    }
+
+    .bento-card-3 {
+      grid-column: span 12;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      padding: 34px 38px;
+      border-left: 4px solid var(--lime);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--radius-md);
+      background: var(--lime-subtle);
+      border: 1px solid var(--line-lime);
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+
+    .card-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--lime);
+      display: inline-block;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      font-size: 1.6rem;
+      margin-bottom: 12px;
+    }
+
+    .card-desc {
+      color: #BAC3CD;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      margin-bottom: 22px;
+    }
+
+    .metric-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      background: rgba(10, 13, 18, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin-top: auto;
+    }
+
+    .metric-val {
+      font-family: var(--font-heading);
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: var(--lime);
+      line-height: 1;
+    }
+
+    .metric-label {
+      font-size: 0.74rem;
+      color: var(--muted);
+      display: block;
+      margin-top: 4px;
+    }
+
+    .bento-list {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+
+    .bento-list li {
+      font-size: 0.88rem;
+      color: #D4DAE0;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .bento-list li::before {
+      content: '✓';
+      color: var(--lime);
+      font-weight: 800;
+    }
+
+    /* ==========================================================================
+       7. KATEQORİYALAR (#kateqoriyalar) - ALL 16 REAL CATEGORIES
+       ========================================================================== */
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    /* Fix: .cat is an <a> tag! Must be display: flex or display: block */
+    a.cat {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 22px 20px;
+      min-height: 154px;
+      border-radius: 20px;
+      text-decoration: none;
+      color: var(--white);
+      position: relative;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    a.cat:hover {
+      transform: translateY(-4px);
+      border-color: var(--line-lime);
+      background: linear-gradient(145deg, rgba(28, 36, 48, 0.95), rgba(16, 22, 30, 0.9));
+    }
+
+    .cat-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .cat .symbol {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(204, 255, 0, 0.1);
+      border: 1px solid var(--line-lime);
+      color: var(--lime);
+      display: grid;
+      place-items: center;
+      font-size: 1.15rem;
+      font-weight: 800;
+      transition: all 0.2s;
+    }
+
+    a.cat:hover .symbol {
+      background: var(--lime);
+      color: #0A0D12;
+      box-shadow: 0 0 15px var(--lime-glow);
+    }
+
+    .cat .arrow {
+      color: var(--muted);
+      font-size: 1.1rem;
+      font-weight: 700;
+      transition: all 0.2s;
+    }
+
+    a.cat:hover .arrow {
+      color: var(--lime);
+      transform: translate(2px, -2px);
+    }
+
+    .cat h3 {
+      font-size: 1.08rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--white);
+    }
+
+    .cat p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       8. MƏHSULLAR (#mehsullar) - FILTERABLE & INTERACTIVE CATALOG
+       ========================================================================== */
+    .catalog-toolbar {
+      background: var(--panel-glass-deep);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-lg);
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 260px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: #0A0D12;
+      border: 1px solid var(--line);
+      border-radius: var(--radius-pill);
+      padding: 10px 18px 10px 42px;
+      color: var(--white);
+      font-size: 0.85rem;
+      transition: border-color 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--lime);
+      box-shadow: 0 0 15px rgba(204, 255, 0, 0.15);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      pointer-events: none;
+      font-size: 0.9rem;
+    }
+
+    .filter-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .filter-pill {
+      padding: 8px 14px;
+      border-radius: var(--radius-pill);
+      background: #0A0D12;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+
+    .filter-pill:hover,
+    .filter-pill.active {
+      background: var(--lime);
+      color: #0A0D12;
+      border-color: var(--lime);
+      font-weight: 700;
+      box-shadow: 0 4px 14px var(--lime-glow);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .product-card {
+      padding: 22px 20px;
+      min-height: 250px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-radius: 20px;
+      position: relative;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--line-lime);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+    }
+
+    .product-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .product-tag {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--lime);
+      font-weight: 700;
+      background: var(--lime-subtle);
+      border: 1px solid var(--line-lime);
+      padding: 4px 10px;
+      border-radius: var(--radius-pill);
+    }
+
+    .product-badge-stock {
+      font-size: 0.68rem;
+      color: #9CA3AF;
+      font-family: monospace;
+    }
+
+    .product-card h3 {
+      font-size: 1.15rem;
+      line-height: 1.25;
+      margin-bottom: 8px;
+      color: var(--white);
+    }
+
+    .product-specs {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+      min-height: 36px;
+    }
+
+    .product-bottom {
+      border-top: 1px solid var(--line);
+      padding-top: 14px;
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .price-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .price {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--lime);
+      line-height: 1;
+    }
+
+    .oldprice {
+      color: #7A8694;
+      text-decoration: line-through;
+      font-family: var(--font-body);
+      font-size: 0.78rem;
+      margin-top: 3px;
+    }
+
+    .prod-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .btn-add-cart {
+      padding: 8px 12px;
+      font-size: 0.74rem;
+      border-radius: var(--radius-pill);
+      background: var(--lime);
+      color: #0A0D12;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-add-cart:hover {
+      background: #e2ff4d;
+      transform: scale(1.04);
+    }
+
+    .btn-link-out {
+      padding: 8px 10px;
+      font-size: 0.74rem;
+      border-radius: var(--radius-pill);
+      background: #0A0D12;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      display: grid;
+      place-items: center;
+      transition: all 0.2s;
+    }
+
+    .btn-link-out:hover {
+      color: var(--lime);
+      border-color: var(--lime);
+    }
+
+    .catalog-note {
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      padding: 24px 28px;
+    }
+
+    .catalog-note p {
+      margin: 0;
+      color: #C8D1DB;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    .note {
+      color: var(--muted-dark);
+      font-size: 0.74rem;
+      line-height: 1.6;
+      margin-top: 14px;
+    }
+
+    /* ==========================================================================
+       9. FRAME SIZE CALCULATOR (#kalkulyator)
+       ========================================================================== */
+    .calc-box {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 36px 32px;
+      border-radius: var(--radius-lg);
+    }
+
+    .calc-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .calc-label {
+      font-weight: 700;
+      font-size: 0.84rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .calc-val {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--lime);
+    }
+
+    .slider-range {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background: #0A0D12;
+      outline: none;
+      accent-color: var(--lime);
+      cursor: pointer;
+      margin-bottom: 28px;
+    }
+
+    .calc-results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      background: #0A0D12;
+      border: 1px solid var(--line-lime);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+
+    .calc-res-title {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-family: monospace;
+      margin-bottom: 4px;
+    }
+
+    .calc-res-value {
+      font-family: var(--font-heading);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.1;
+    }
+
+    .calc-res-sub {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    /* ==========================================================================
+       10. HAQQIMIZDA, SERVİS & ZƏMANƏT
+       ========================================================================== */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .info-card {
+      padding: 34px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .info-card h3 {
+      font-size: 1.6rem;
+      margin: 14px 0 16px;
+    }
+
+    .info-card p {
+      color: #B5BEC8;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    .info-card p:last-child {
+      margin-bottom: 0;
+    }
+
+    .warranty-badge {
+      background: rgba(204, 255, 0, 0.08);
+      border: 1px solid var(--line-lime);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    /* ==========================================================================
+       11. MAĞAZALAR VƏ ÜNVANLAR (#magazalar)
+       ========================================================================== */
+    .store-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .store-card {
+      padding: 26px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 200px;
+    }
+
+    .store-card h3 {
+      font-size: 1.25rem;
+      margin: 10px 0 8px;
+    }
+
+    .store-card p {
+      color: #AAB5C2;
+      font-size: 0.86rem;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .store-card a {
+      color: var(--lime);
+      font-weight: 600;
+      font-size: 0.86rem;
+    }
+
+    .store-card a:hover {
+      text-decoration: underline;
+    }
+
+    /* ==========================================================================
+       12. ƏLAQƏ & KANALLAR (#elaqe)
+       ========================================================================== */
+    .contact-panel {
+      padding: 38px 34px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    .contact-panel h2 {
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      margin: 14px 0 16px;
+      line-height: 1.05;
+    }
+
+    .contact-panel p {
+      color: #B2BCC7;
+      line-height: 1.75;
+      font-size: 0.94rem;
+      margin-bottom: 24px;
+    }
+
+    .contact-links {
+      display: grid;
+      gap: 10px;
+    }
+
+    .contact-links a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 15px 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-md);
+      font-size: 0.88rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+
+    .contact-links a:hover {
+      border-color: var(--line-lime);
+      background: rgba(204, 255, 0, 0.06);
+      transform: translateX(4px);
+    }
+
+    .contact-links span:last-child {
+      color: var(--lime);
+      font-weight: 800;
+    }
+
+    /* ==========================================================================
+       13. FOOTER
+       ========================================================================== */
+    .footer {
+      margin-top: 60px;
+      padding: 36px 0 42px;
+      border-top: 1px solid var(--line);
+      font-size: 0.8rem;
+      color: #8C98A5;
+      background: #06080C;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .footlinks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 22px;
+      max-width: 760px;
+    }
+
+    .footlinks a:hover {
+      color: var(--lime);
+    }
+
+    .footer-bottom {
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    /* ==========================================================================
+       14. CART DRAWER (INTERACTIVE SHOPPING CART)
+       ========================================================================== */
+    .cart-drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.78);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      z-index: 200;
+      display: none;
+      justify-content: flex-end;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .cart-drawer-overlay.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    .cart-drawer {
+      background: #0E131A;
+      border-left: 1px solid var(--line);
+      width: 100%;
+      max-width: 440px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 28px 24px;
+      box-shadow: -15px 0 45px rgba(0, 0, 0, 0.8);
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .cart-drawer-overlay.active .cart-drawer {
+      transform: translateX(0);
+    }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cart-close-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      color: var(--white);
+      font-size: 1.2rem;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .cart-close-btn:hover {
+      border-color: var(--lime);
+      color: var(--lime);
+    }
+
+    .cart-items-wrap {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px 0;
+      max-height: calc(100vh - 280px);
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .cart-item-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 4px;
+    }
+
+    .cart-item-price {
+      color: var(--lime);
+      font-weight: 800;
+      font-size: 0.88rem;
+      font-family: var(--font-heading);
+    }
+
+    .cart-item-del {
+      color: #EF4444;
+      background: transparent;
+      font-size: 0.8rem;
+      padding: 6px;
+      cursor: pointer;
+    }
+
+    .cart-item-del:hover {
+      text-decoration: underline;
+    }
+
+    .cart-footer {
+      border-top: 1px solid var(--line);
+      padding-top: 18px;
+    }
+
+    .cart-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .cart-total-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--white);
+    }
+
+    .cart-total-row span:last-child {
+      color: var(--lime);
+    }
+
+    /* ==========================================================================
+       15. GSAP ANIMATION PRESETS & BULLETPROOF VISIBILITY FALLBACK
+       ========================================================================== */
+    /* By default, elements are completely visible. Only when JavaScript initializes
+       do we apply smooth scroll animations. This prevents the "blank screen" bug! */
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* When animated via JS */
+    .has-motion .reveal-init {
+      opacity: 0;
+      transform: translateY(22px);
+    }
+
+    .has-motion .reveal-init.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==========================================================================
+       16. RESPONSIVE BREAKPOINTS (MOBILE 320-480px, TABLET 481-1024px, DESKTOP 1025px+)
+       ========================================================================== */
+    @media (max-width: 1024px) {
+      .category-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .bento-card-1 {
+        grid-column: span 12;
+      }
+      .bento-card-2 {
+        grid-column: span 12;
+      }
+      .store-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 860px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: rgba(10, 13, 18, 0.98);
+        border-bottom: 1px solid var(--line);
+        flex-direction: column;
+        align-items: stretch;
+        padding: 24px;
+        gap: 16px;
+        backdrop-filter: blur(24px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        font-size: 1rem;
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .menu-toggle {
+        display: inline-flex;
+      }
+
+      .category-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .bento-card-3 {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .two-col,
+      .contact-panel {
+        grid-template-columns: 1fr;
+      }
+
+      .store-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --max: calc(100% - 32px);
+      }
+
+      .topline .inner {
+        font-size: 0.7rem;
+      }
+
+      .topline-secondary {
+        display: none;
+      }
+
+      .hero {
+        min-height: 580px;
+        padding: 50px 0 70px;
+      }
+
+      h1.hero-title {
+        font-size: clamp(2.6rem, 11vw, 3.8rem);
+      }
+
+      .hero p {
+        font-size: 0.95rem;
+      }
+
+      .stats {
+        gap: 20px;
+      }
+
+      .section {
+        padding: 56px 0;
+      }
+
+      .section-head {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+
+      .category-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .product-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .catalog-note {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+
+      .catalog-note .btn {
+        width: 100%;
+      }
+
+      .metric-row {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .calc-results-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .contact-panel {
+        padding: 26px 20px;
+      }
+
+      .footer-top,
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. FIXED BACKGROUND VIDEO & OVERLAY
+       ======================================================================== -->
+  <video class="video-bg" id="backgroundVideo" autoplay muted loop playsinline preload="auto" aria-hidden="true">
+    <source src="https://res.cloudinary.com/duuymckft/video/upload/v1792405275/ipaxgku2tgjo5siqbnxw.mp4" type="video/mp4">
+  </video>
+  <div class="video-overlay" aria-hidden="true"></div>
+
+  <div class="site">
+    <!-- ======================================================================
+         2. TOP ANNOUNCEMENT BAR
+         ====================================================================== -->
+    <div class="topline">
+      <div class="wrap inner">
+        <span class="topline-badge">
+          <strong>VELO.AZ</strong> · Velosiped dünyası 1998-ci ildən · Bakı & Sumqayıt
+        </span>
+        <span class="topline-secondary">
+          <a href="tel:+994703129549">☎ (+994 70) 312-95-49</a> &nbsp;·&nbsp; Hər gün 09:00–20:30 &nbsp;·&nbsp;
+          <a href="#kalkulyator" class="lime">Ölçü Kalkulyatoru</a>
+        </span>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         3. STICKY HEADER & NAVIGATION
+         ====================================================================== -->
+    <header class="site-header" id="siteHeader">
+      <div class="wrap" style="width: 100%;">
+        <nav class="nav" aria-label="Əsas menyu">
+          <a class="brand" href="#top">
+            <span class="brand-mark">V</span>
+            <span>VELO<span class="lime">.az</span></span>
+          </a>
+
+          <div class="nav-links" id="navLinks">
+            <a href="#ekosistem">Ekosistem</a>
+            <a href="#kateqoriyalar">Kateqoriyalar</a>
+            <a href="#mehsullar">Məhsullar</a>
+            <a href="#kalkulyator">Ölçü Tap</a>
+            <a href="#haqqimizda">Haqqımızda</a>
+            <a href="#servis">Servis</a>
+            <a href="#magazalar">Mağazalar</a>
+            <a href="#elaqe">Əlaqə</a>
+          </div>
+
+          <div class="nav-actions">
+            <button class="btn-cart" onclick="toggleCartDrawer(true)" aria-label="Səbətə bax">
+              <span>Səbət</span>
+              <span class="cart-badge" id="cartBadgeCount">0</span>
+            </button>
+
+            <a class="btn" href="https://velo.az/index.php?path=1_10&route=product/category" target="_blank" rel="noopener">
+              Kataloq ↗
+            </a>
+
+            <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-label="Menyunu aç">
+              ☰
+            </button>
+          </div>
+        </nav>
+      </div>
+    </header>
+
+    <!-- ======================================================================
+         4. HERO SECTION
+         ====================================================================== -->
+    <main id="top">
+      <section class="wrap hero">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="dot"></span> Hərəkətin yeni səviyyəsi
+          </div>
+
+          <h1 class="hero-title">
+            Şəhəri öz<br>
+            <em>ritminlə</em> yaşa.
+          </h1>
+
+          <p>
+            Velosipedlər, aksesuarlar və ehtiyat hissələri — gündəlik şəhər gediş-gəlişindən dağ marşrutlarına qədər. Seçimini et, marşrutunu kəşf et və velosipedini peşəkar servisə etibar et.
+          </p>
+
+          <div class="actions">
+            <a class="btn" href="#mehsullar">Məhsulları kəşf et ↗</a>
+            <a class="btn ghost" href="#magazalar">Mağazalarımızı tap</a>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <strong>1998<span>-dən</span></strong>
+              <small>Velosiped təcrübəsi</small>
+            </div>
+            <div class="stat">
+              <strong>16<span>+</span></strong>
+              <small>Məhsul kateqoriyası</small>
+            </div>
+            <div class="stat">
+              <strong>6 ay<span>*</span></strong>
+              <small>Rəsmi zəmanət</small>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           5. BENTO-GRID EKOSİSTEM (MÜHƏNDİSLİK, MTB & 24/7 SERVİS)
+           ====================================================================== -->
+      <section class="section" id="ekosistem">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <div class="kicker">Mühəndislik & Texnologiya</div>
+              <h2>velo.az Ekosistemi</h2>
+            </div>
+            <p>
+              Bakının təpəli relyefi, Xəzər sahili və Abşeron yolları üçün sınaqdan keçmiş güc, yüngül çərçivələr və təcili usta dəstəyi.
+            </p>
+          </div>
+
+          <div class="bento-grid">
+            <!-- Bento 1: E-Bike Power -->
+            <div class="glass bento-card bento-card-1 reveal">
+              <div>
+                <div class="card-icon">⚡</div>
+                <span class="card-tag">Smart E-Mobility</span>
+                <h3 class="card-title">E-Bike Power</h3>
+                <p class="card-desc">
+                  Bakının küləkli havası və yoxuşları üçün xüsusi tənzimlənmiş 85Nm fırlanma anı. İnteqrasiya olunmuş Samsung Li-ion batareyası ilə bir şarjla bütün şəhəri sərbəst gəzin.
+                </p>
+                <div class="metric-row">
+                  <div>
+                    <span class="metric-val tabular-nums">120<span style="font-size:0.9rem; color:#888;">km</span></span>
+                    <span class="metric-label">Bir şarja məsafə</span>
+                  </div>
+                  <div>
+                    <span class="metric-val tabular-nums">85<span style="font-size:0.9rem; color:#888;">Nm</span></span>
+                    <span class="metric-label">Bafang / Bosch güc</span>
+                  </div>
+                  <div>
+                    <span class="metric-val tabular-nums">750<span style="font-size:0.9rem; color:#888;">Wh</span></span>
+                    <span class="metric-label">Samsung batareya</span>
+                  </div>
+                </div>
+              </div>
+              <div style="border-top: 1px solid var(--line); padding-top: 16px; margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size:0.8rem; color:var(--muted);">Eco / Tour / Turbo rejimləri</span>
+                <a href="#mehsullar" onclick="filterCatalogCategory('elektro')" class="lime" style="font-weight: 700; font-size: 0.85rem;">
+                  Elektro modellərə bax &rarr;
+                </a>
+              </div>
+            </div>
+
+            <!-- Bento 2: MTB & Şəhər -->
+            <div class="glass bento-card bento-card-2 reveal">
+              <div>
+                <div class="card-icon">📐</div>
+                <span class="card-tag">Toray T800 Monokok</span>
+                <h3 class="card-title">MTB & Şəhər</h3>
+                <p class="card-desc">
+                  Karbon rama geometriyası vibrasiyaları sönümləyir, daşlı enişlərdə möhkəmlik və şəhər asfaltında aerodinamik sürət təmin edir.
+                </p>
+                <ul class="bento-list">
+                  <li>Ultra-yüngül karbon gövdə</li>
+                  <li>100% daxili kabel çəkilişi</li>
+                  <li>RockShox & Fox pnevmatik asqı</li>
+                  <li>29" və 28" təkər klirensi</li>
+                </ul>
+              </div>
+              <div style="border-top: 1px solid var(--line); padding-top: 16px;">
+                <a href="#mehsullar" onclick="filterCatalogCategory('mtb')" class="lime" style="font-weight: 700; font-size: 0.85rem;">
+                  Dağ modellərinə bax &rarr;
+                </a>
+              </div>
+            </div>
+
+            <!-- Bento 3: 24/7 Servis -->
+            <div class="glass bento-card bento-card-3 reveal">
+              <div style="flex: 1;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                  <span class="card-icon" style="margin-bottom:0; width:36px; height:36px; font-size:1.1rem;">🛠️</span>
+                  <span class="card-tag" style="margin-bottom:0;">Ekspres Mobil Servis · Bakı & Sumqayıt</span>
+                </div>
+                <h3 class="card-title" style="margin-bottom: 6px;">24/7 Servis, Təcili Usta və Kirayə</h3>
+                <p class="card-desc" style="margin-bottom: 0; max-width: 650px;">
+                  Yolda zənciriniz qırıldı və ya əyləciniz sazlanmalıdır? Mobil servis komandamız ünvana çatır. Həmçinin 6 ay rəsmi zəmanət və şəxsiyyət vəsiqəsi ilə kirayə xidməti mövcuddur.
+                </p>
+              </div>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <a href="https://wa.me/994703129549?text=Salam%2C%20velo.az%20sayt%C4%B1ndan%20servis%20v%C9%99%20usta%20haqq%C4%B1nda%20m%C9%99lumat%20ist%C9%99yir%C9%99m" target="_blank" rel="noopener" class="btn">
+                  Usta Çağır ↗
+                </a>
+                <a href="tel:+994703129549" class="btn ghost">
+                  (+994 70) 312-95-49
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           6. KATEQORİYALAR BÖLMƏSİ (#kateqoriyalar)
+           ====================================================================== -->
+      <section class="section" id="kateqoriyalar">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <div class="kicker">Kataloqu kəşf et</div>
+              <h2>Hər yol üçün<br>öz velosipedin.</h2>
+            </div>
+            <p>
+              VELO.az kataloqundakı əsas bölmələr. Kateqoriyanı seçərək mövcud çeşidi, aktual qiymətləri və rəsmi mağazanın məhsul detalları ilə tanış ol.
+            </p>
+          </div>
+
+          <div class="category-grid">
+            <!-- 1. Dağ / MTB -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=1_11&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'mtb')">
+              <div class="cat-head">
+                <div class="symbol">⌁</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Dağ / MTB</h3>
+                <p>Dağ və yolsuzluq marşrutları</p>
+              </div>
+            </a>
+
+            <!-- 2. Şəhər -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=12&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'seher')">
+              <div class="cat-head">
+                <div class="symbol">↗</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Şəhər</h3>
+                <p>Gündəlik gediş-gəliş və bulvar</p>
+              </div>
+            </a>
+
+            <!-- 3. Elektro velosipedlər -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=1_17&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'elektro')">
+              <div class="cat-head">
+                <div class="symbol">ϟ</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Elektro velosipedlər</h3>
+                <p>Elektrik dəstəyi ilə daha uzağa</p>
+              </div>
+            </a>
+
+            <!-- 4. Uşaq velosipedləri -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=1_13&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'usaq')">
+              <div class="cat-head">
+                <div class="symbol">◉</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Uşaq velosipedləri</h3>
+                <p>Balacalar üçün təhlükəsiz seçimlər</p>
+              </div>
+            </a>
+
+            <!-- 5. Qadın velosipedləri -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=1_12&route=product/category" target="_blank" rel="noopener">
+              <div class="cat-head">
+                <div class="symbol">◌</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Qadın velosipedləri</h3>
+                <p>Erqonomik çərçivə və rahatlıq</p>
+              </div>
+            </a>
+
+            <!-- 6. Qatlanan -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=1_14&route=product/category" target="_blank" rel="noopener">
+              <div class="cat-head">
+                <div class="symbol">⤢</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Qatlanan</h3>
+                <p>Kompakt saxlama və avtomobil baqajı</p>
+              </div>
+            </a>
+
+            <!-- 7. Şosse velosipedləri -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=1_15&route=product/category" target="_blank" rel="noopener">
+              <div class="cat-head">
+                <div class="symbol">⌁</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Şosse velosipedləri</h3>
+                <p>Uzun asfalt marşrutları və sürət</p>
+              </div>
+            </a>
+
+            <!-- 8. Üç təkərli -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=1_16&route=product/category" target="_blank" rel="noopener">
+              <div class="cat-head">
+                <div class="symbol">◉</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Üç təkərli</h3>
+                <p>Praktik və yükdaşıyan stabil modellər</p>
+              </div>
+            </a>
+
+            <!-- 9. Fat Bike -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=1_18&route=product/category" target="_blank" rel="noopener">
+              <div class="cat-head">
+                <div class="symbol">✳</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Fat Bike</h3>
+                <p>Qum və qar üçün enli təkərli modellər</p>
+              </div>
+            </a>
+
+            <!-- 10. BMX Free Ride -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=1_19&route=product/category" target="_blank" rel="noopener">
+              <div class="cat-head">
+                <div class="symbol">⚡</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>BMX Free Ride</h3>
+                <p>Triklər, tramplinlər və küçə sürüşü</p>
+              </div>
+            </a>
+
+            <!-- 11. Aksesuarlar -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=2&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'aksesuar')">
+              <div class="cat-head">
+                <div class="symbol">＋</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Aksesuarlar</h3>
+                <p>İşıq, qıfıl, nasos, çanta və dəbilqə</p>
+              </div>
+            </a>
+
+            <!-- 12. Ehtiyat hissələri -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=3&route=product/category" target="_blank" rel="noopener" onclick="highlightFilter(event, 'hisse')">
+              <div class="cat-head">
+                <div class="symbol">⚙</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Ehtiyat hissələri</h3>
+                <p>Əyləc, ötürücü, təkər və zəncirlər</p>
+              </div>
+            </a>
+
+            <!-- 13. Skuter / Skeytbord / Rolik -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?path=4&route=product/category" target="_blank" rel="noopener">
+              <div class="cat-head">
+                <div class="symbol">↝</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Skuter / Skeyt / Rolik</h3>
+                <p>Alternativ şəhər hərəkət vasitələri</p>
+              </div>
+            </a>
+
+            <!-- 14. Endirimli məhsullar -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?route=product/special" target="_blank" rel="noopener">
+              <div class="cat-head">
+                <div class="symbol">%</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Endirimli məhsullar</h3>
+                <p>Mövsümi kampaniyalar və təkliflər</p>
+              </div>
+            </a>
+
+            <!-- 15. Outlet -->
+            <a class="glass cat reveal" href="https://velo.az/index.php?route=product/special" target="_blank" rel="noopener">
+              <div class="cat-head">
+                <div class="symbol">◈</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Outlet</h3>
+                <p>Xüsusi qiymətli stok qalıqları</p>
+              </div>
+            </a>
+
+            <!-- 16. Digər məhsullar -->
+            <a class="glass cat reveal" href="https://velo.az/" target="_blank" rel="noopener">
+              <div class="cat-head">
+                <div class="symbol">⋯</div>
+                <span class="arrow">↗</span>
+              </div>
+              <div>
+                <h3>Digər məhsullar</h3>
+                <p>Rəsmi onlayn kataloqun bütün çeşidi</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           7. MƏHSULLAR BÖLMƏSİ (#mehsullar)
+           ====================================================================== -->
+      <section class="section" id="mehsullar">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <div class="kicker">Saytda göstərilən nümunələr</div>
+              <h2>Seçilmiş məhsullar.</h2>
+            </div>
+            <p>
+              Qiymətlər rəsmi kataloqdan götürülmüş nümunələrdir və dəyişə bilər. Ən son qiymət, sifariş və mövcudluq üçün rəsmi məhsul səhifəsinə keçin və ya səbətə əlavə edin.
+            </p>
+          </div>
+
+          <!-- Interactive Search & Filter Toolbar -->
+          <div class="catalog-toolbar reveal">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="productSearchInput" placeholder="Model, növ və ya brend axtar (məs. Chempion, Aurus, Elektro)..." oninput="handleCatalogSearch(this.value)">
+            </div>
+
+            <div class="filter-pills" id="categoryFilterPills">
+              <button class="filter-pill active" data-filter="all" onclick="filterCatalogCategory('all')">Hamısı</button>
+              <button class="filter-pill" data-filter="mtb" onclick="filterCatalogCategory('mtb')">Dağ / MTB</button>
+              <button class="filter-pill" data-filter="seher" onclick="filterCatalogCategory('seher')">Şəhər</button>
+              <button class="filter-pill" data-filter="elektro" onclick="filterCatalogCategory('elektro')">Elektro</button>
+              <button class="filter-pill" data-filter="usaq" onclick="filterCatalogCategory('usaq')">Uşaq</button>
+              <button class="filter-pill" data-filter="aksesuar" onclick="filterCatalogCategory('aksesuar')">Aksesuar</button>
+              <button class="filter-pill" data-filter="hisse" onclick="filterCatalogCategory('hisse')">Ehtiyat hissəsi</button>
+            </div>
+          </div>
+
+          <!-- Product Grid rendered with high-fidelity items -->
+          <div class="product-grid" id="productGridContainer">
+            <!-- Rendered dynamically by JavaScript with authentic VELO.az catalog entries -->
+          </div>
+
+          <div class="glass catalog-note reveal">
+            <p>
+              <strong>Bütün modellər, ölçülər, brendlər və qiymətlər bir yerdə.</strong><br>
+              Rəsmi mağazada tam kataloqu, filtr və sıralama seçimlərini yoxlayın.
+            </p>
+            <a class="btn" href="https://velo.az/" target="_blank" rel="noopener">Tam kataloqa keç ↗</a>
+          </div>
+
+          <p class="note">
+            * Məhsul adları və qiymətləri velo.az saytında araşdırma zamanı görünən rəsmi məlumatlara əsaslanır; stok və qiymət yenilənmələri üçün rəsmi məhsul səhifəsini yoxlamaq lazımdır.
+          </p>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           8. BOY VƏ ÇƏRÇİVƏ ÖLÇÜSÜ KALKULYATORU (#kalkulyator)
+           ====================================================================== -->
+      <section class="section" id="kalkulyator">
+        <div class="wrap">
+          <div class="section-head reveal" style="text-align: center; justify-content: center;">
+            <div style="max-width: 600px; margin: 0 auto;">
+              <div class="kicker">Dəqiq Uyğunluq</div>
+              <h2>Öz velosiped ölçünü tap.</h2>
+              <p style="margin: 10px auto 0;">
+                Boyunuzu santimetrlə qeyd edin, sistem sizin üçün optimal çərçivə və təkər ölçüsünü dərhal hesablasın.
+              </p>
+            </div>
+          </div>
+
+          <div class="glass calc-box reveal">
+            <div class="calc-head">
+              <span class="calc-label">Sizin Boyunuz:</span>
+              <span class="calc-val tabular-nums" id="heightSliderValue">175 sm</span>
+            </div>
+
+            <input type="range" class="slider-range" id="riderHeightSlider" min="140" max="205" value="175" oninput="calculateBikeSize(this.value)">
+
+            <div class="calc-results-grid">
+              <div>
+                <div class="calc-res-title">Tövsiyə edilən çərçivə:</div>
+                <div class="calc-res-value" id="calcFrameSize">M (Medium)</div>
+                <div class="calc-res-sub" id="calcFrameInch">17" - 18" (43 - 47 sm)</div>
+              </div>
+              <div>
+                <div class="calc-res-title">Optimal təkər diametri:</div>
+                <div class="calc-res-value lime" id="calcWheelSize">29 düym</div>
+                <div class="calc-res-sub">Maksimal rahatlıq və sabitlik</div>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+              <a href="#mehsullar" class="btn" style="width: 100%; justify-content: center;">
+                Bu ölçüyə uyğun velosipedlərə bax ↗
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           9. HAQQIMIZDA VƏ SERVİS XİDMƏTİ (#haqqimizda, #servis)
+           ====================================================================== -->
+      <section class="section" id="haqqimizda">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <div class="kicker">VELO.az haqqında</div>
+              <h2>Təcrübə ilə<br>qurulan yol.</h2>
+            </div>
+            <p>
+              Şirkətin mövcud tarixçəsi, zəmanət öhdəlikləri və peşəkar servis xidməti rəsmi standartlara əsaslanır.
+            </p>
+          </div>
+
+          <div class="two-col">
+            <article class="glass info-card reveal">
+              <div>
+                <div class="kicker">1998-ci ildən</div>
+                <h3>Çempion Velosiped Mağazası</h3>
+                <p>
+                  1998-ci ildə Sumqayıtda fəaliyyətə başlayan Çempion Velosiped Mağazası Corratec, Kross, Merida, Giant, Stels, Start, Aurus, Trek, Mercury və Cube kimi beynəlxalq brendlərin rəsmi satışını həyata keçirib.
+                </p>
+                <p>
+                  Şirkət mağaza və diler şəbəkəsini genişləndirərək müxtəlif büdcələrə uyğun velosiped, orijinal ehtiyat hissəsi, aksesuar və peşəkar texniki məlumat təklif edir.
+                </p>
+                <p>
+                  Azərbaycanda velosiped idmanını, sağlam həyat tərzini və ekoloji nəqliyyat infrastrukturunun inkişafını fəal şəkildə dəstəkləyirik.
+                </p>
+              </div>
+              <div style="margin-top: 20px;">
+                <a class="btn ghost" href="https://velo.az/company" target="_blank" rel="noopener">Şirkət haqqında ↗</a>
+              </div>
+            </article>
+
+            <article class="glass info-card reveal" id="servis">
+              <div>
+                <div class="kicker">Servis və Zəmanət</div>
+                <h3>Velosipedinə peşəkar qulluq</h3>
+                <p>
+                  Sürət ötürücüsündə və ya zəncirdə səs, əyləc sisteminin sazlanması, hidravlik yağ yenilənməsi və ya ehtiyat hissələrinin təmiri zamanı velosipedini mütəxəssislərə həvalə edə bilərsən.
+                </p>
+
+                <div class="warranty-badge">
+                  <strong class="lime" style="display:block; margin-bottom: 6px; font-size: 0.92rem;">★ 6 Ay Rəsmi Zəmanət:</strong>
+                  <p style="font-size: 0.82rem; color: #D1D8E0; margin: 0; line-height: 1.6;">
+                    Rəsmi saytda qeyd olunduğu kimi, seçilmiş məhsullara satış tarixindən 6 ay müddətində istehsalat nasazlığı ilə bağlı çərçivə, ön top, orta top və arxa top detallarının pulsuz təmiri üçün rəsmi zəmanət təqdim olunur.
+                  </p>
+                </div>
+              </div>
+              <div style="margin-top: 14px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a class="btn" href="https://wa.me/994703129549?text=Salam%20velo.az%2C%20servis%20üçün%20müraciət%20edirəm" target="_blank" rel="noopener">
+                  WhatsApp Servis Usta ↗
+                </a>
+                <a class="btn ghost" href="https://velo.az/service" target="_blank" rel="noopener">Servis məlumatı ↗</a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           10. MAĞAZALAR (#magazalar)
+           ====================================================================== -->
+      <section class="section" id="magazalar">
+        <div class="wrap">
+          <div class="section-head reveal">
+            <div>
+              <div class="kicker">Ünvanlar və iş vaxtı</div>
+              <h2>Gəl, görüşək.</h2>
+            </div>
+            <p>
+              Rəsmi mağaza və diler məlumatları. Səfərdən əvvəl telefonla iş vaxtını və məhsul mövcudluğunu dəqiqləşdirmək tövsiyə olunur.
+            </p>
+          </div>
+
+          <div class="store-grid">
+            <!-- Mağaza 1 -->
+            <article class="glass store-card reveal">
+              <div>
+                <div class="kicker">Mağaza 01</div>
+                <h3>Sumqayıt · 1-ci mikrorayon</h3>
+                <p>
+                  Nəriman Nərimanov küçəsi<br>
+                  Telefon: <a href="tel:+994703129549">(+994 70) 312-95-49</a><br>
+                  İş vaxtı: 09:00–20:30 (Hər gün)
+                </p>
+              </div>
+              <div>
+                <a href="tel:+994703129549">Zəng et &rarr;</a>
+              </div>
+            </article>
+
+            <!-- Mağaza 2 -->
+            <article class="glass store-card reveal">
+              <div>
+                <div class="kicker">Mağaza 02</div>
+                <h3>Sumqayıt · 21-ci mikrorayon</h3>
+                <p>
+                  İsmət Qayıbov küçəsi<br>
+                  Telefon: <a href="tel:+994703129549">(+994 70) 312-95-49</a><br>
+                  İş vaxtı: 09:00–20:30 (Hər gün)
+                </p>
+              </div>
+              <div>
+                <a href="tel:+994703129549">Zəng et &rarr;</a>
+              </div>
+            </article>
+
+            <!-- Diler 1: Velosport -->
+            <article class="glass store-card reveal">
+              <div>
+                <div class="kicker">Diler</div>
+                <h3>Velosport · Bakı</h3>
+                <p>
+                  Nərimanov rayonu, Əliyar Əliyev 154<br>
+                  Telefon: <a href="tel:+994705478755">(+994 70) 547-87-55</a><br>
+                  İş vaxtı: 09:00–21:00
+                </p>
+              </div>
+              <div>
+                <a href="tel:+994705478755">Zəng et &rarr;</a>
+              </div>
+            </article>
+
+            <!-- Diler 2: Velotrek -->
+            <article class="glass store-card reveal">
+              <div>
+                <div class="kicker">Diler</div>
+                <h3>Velotrek · Bakı</h3>
+                <p>
+                  Xətai rayonu, Xudu Məmmədov 1d<br>
+                  Telefon: <a href="tel:+994703550677">(+994 70) 355-06-77</a><br>
+                  İş vaxtı: 09:00–21:00
+                </p>
+              </div>
+              <div>
+                <a href="tel:+994703550677">Zəng et &rarr;</a>
+              </div>
+            </article>
+
+            <!-- Kirayə -->
+            <article class="glass store-card reveal">
+              <div>
+                <div class="kicker">Kirayə</div>
+                <h3>Velosiped Kirayəsi</h3>
+                <p>
+                  Kirayə velosipedləri şəxsiyyət vəsiqəsi ilə əldə etmək mümkündür. Mövcudluq və tarifləri əvvəlcədən dəqiqləşdirin.
+                </p>
+              </div>
+              <div>
+                <a href="https://velo.az/rent" target="_blank" rel="noopener">Kirayə haqqında ↗</a>
+              </div>
+            </article>
+
+            <!-- Korporativ -->
+            <article class="glass store-card reveal">
+              <div>
+                <div class="kicker">Korporativ</div>
+                <h3>Şirkətlər üçün satış</h3>
+                <p>
+                  Köçürmə yolu ilə ödəniş, əməkdaş şirkətlər üçün xüsusi qiymətlər və saytda olmayan modelləri öncədən sifariş imkanı.
+                </p>
+              </div>
+              <div>
+                <a href="https://velo.az/corporate-sales" target="_blank" rel="noopener">Ətraflı məlumat ↗</a>
+              </div>
+            </article>
+          </div>
+
+          <p class="note">
+            Ünvanlar və iş saatları velo.az rəsmi məlumatlarına əsaslanır; səfərdən əvvəl əlaqə saxlamaq tövsiyə olunur.
+          </p>
+        </div>
+      </section>
+
+      <!-- ======================================================================
+           11. ƏLAQƏ BÖLMƏSİ (#elaqe)
+           ====================================================================== -->
+      <section class="section" id="elaqe">
+        <div class="wrap">
+          <div class="glass contact-panel reveal">
+            <div>
+              <div class="kicker">Sualın var?</div>
+              <h2>Əlaqə qur.<br><span class="lime">Yola çıx.</span></h2>
+              <p>
+                Məhsul, servis, kirayə, korporativ satış və ya əməkdaşlıqla bağlı məlumat almaq üçün rəsmi əlaqə kanallarından istifadə edin.
+              </p>
+              <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+                <a class="btn" href="tel:+994703129549">Zəng: +994 70 312-95-49 ↗</a>
+                <a class="btn ghost" href="https://wa.me/994703129549" target="_blank" rel="noopener">WhatsApp ilə yaz ↗</a>
+              </div>
+            </div>
+
+            <div class="contact-links">
+              <a href="https://velo.az/contact" target="_blank" rel="noopener">
+                <span>Rəsmi əlaqə formu</span>
+                <span>↗</span>
+              </a>
+              <a href="https://velo.az/company" target="_blank" rel="noopener">
+                <span>Şirkət haqqında</span>
+                <span>↗</span>
+              </a>
+              <a href="https://velo.az/service" target="_blank" rel="noopener">
+                <span>Servis xidməti və zəmanət</span>
+                <span>↗</span>
+              </a>
+              <a href="https://velo.az/rent" target="_blank" rel="noopener">
+                <span>Kirayə velosiped</span>
+                <span>↗</span>
+              </a>
+              <a href="https://velo.az/corporate-sales" target="_blank" rel="noopener">
+                <span>Korporativ satışlar</span>
+                <span>↗</span>
+              </a>
+              <a href="https://velo.az/career" target="_blank" rel="noopener">
+                <span>Karyera — CV göndər</span>
+                <span>↗</span>
+              </a>
+              <a href="https://velo.az/contact" target="_blank" rel="noopener">
+                <span>Təklif və şikayətlər</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ======================================================================
+         12. FOOTER
+         ====================================================================== -->
+    <footer class="footer">
+      <div class="wrap">
+        <div class="footer-top">
+          <a class="brand" href="#top">
+            <span class="brand-mark">V</span>
+            <span>VELO<span class="lime">.az</span></span>
+          </a>
+
+          <div class="footlinks">
+            <a href="https://velo.az/" target="_blank" rel="noopener">Tam kataloq</a>
+            <a href="https://velo.az/company" target="_blank" rel="noopener">Şirkət haqqında</a>
+            <a href="https://velo.az/service" target="_blank" rel="noopener">Servis</a>
+            <a href="https://velo.az/store" target="_blank" rel="noopener">Mağazalar</a>
+            <a href="https://velo.az/contact" target="_blank" rel="noopener">Təklif və şikayətlər</a>
+            <a href="https://velo.az/corporate-sales" target="_blank" rel="noopener">Korporativ satışlar</a>
+            <a href="https://velo.az/career" target="_blank" rel="noopener">Karyera</a>
+            <a href="https://velo.az/rent" target="_blank" rel="noopener">Kirayə</a>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <span>© <span id="currentYear"></span> VELO.az · Bütün hüquqlar qorunur.</span>
+          <span>1998-ci ildən Azərbaycanda velosiped mədəniyyəti.</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ========================================================================
+       13. INTERACTIVE CART DRAWER
+       ======================================================================== -->
+  <div class="cart-drawer-overlay" id="cartDrawerOverlay" onclick="toggleCartDrawer(false)">
+    <div class="cart-drawer" onclick="event.stopPropagation()">
+      <div>
+        <div class="cart-header">
+          <h3 style="font-size: 1.3rem;">Səbətiniz</h3>
+          <button class="cart-close-btn" onclick="toggleCartDrawer(false)" aria-label="Bağla">✕</button>
+        </div>
+
+        <div class="cart-items-wrap" id="cartItemsList">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <div class="cart-footer">
+        <div class="cart-row">
+          <span>Çatdırılma (Bakı & Sumqayıt):</span>
+          <span class="lime" style="font-weight: 700;">PULSUZ</span>
+        </div>
+        <div class="cart-total-row">
+          <span>Cəmi:</span>
+          <span id="cartTotalPrice">0.00 ₼</span>
+        </div>
+        <button class="btn" style="width: 100%; justify-content: center; padding: 13px;" onclick="checkoutWhatsAppOrder()">
+          Sifarişi WhatsApp ilə göndər ↗
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       14. ROBUST JAVASCRIPT ENGINE & VISUAL LOGIC
+       ======================================================================== -->
+  <script>
+    // Authentic catalog data matching all real velo.az products
+    const CATALOG_PRODUCTS = [
+      {
+        id: 'chempion-12-sport',
+        name: 'Chempion 12 Sport',
+        category: 'usaq',
+        categoryName: 'Uşaq velosipedi',
+        price: 68.99,
+        oldPrice: null,
+        specs: '12" təkər · Yan təkərlər daxil · Qoruyucu zəncir qapağı',
+        link: 'https://velo.az/'
+      },
+      {
+        id: 'angel-12',
+        name: 'Angel 12',
+        category: 'usaq',
+        categoryName: 'Uşaq velosipedi',
+        price: 85.00,
+        oldPrice: null,
+        specs: '12" çəhrayı/bənövşəyi dizayn · Səbətli · Rahat yəhər',
+        link: 'https://velo.az/'
+      },
+      {
+        id: 'chempion-24-mtb',
+        name: 'Chempion 24 MTB BIKE',
+        category: 'mtb',
+        categoryName: 'Dağ velosipedi',
+        price: 189.00,
+        oldPrice: null,
+        specs: '24" MTB təkərlər · Amortizatorlu ön çəngəl · Çoxpilləli ötürücü',
+        link: 'https://velo.az/'
+      },
+      {
+        id: 'aurus-700c',
+        name: 'Aurus 700c',
+        category: 'seher',
+        categoryName: 'Şəhər / MTB',
+        price: 649.99,
+        oldPrice: 899.00,
+        specs: '700c (28") yüngül çərçivə · Disk əyləclər · Shimano ötürücü',
+        link: 'https://velo.az/'
+      },
+      {
+        id: 'hyper-elektro26',
+        name: 'Hyper Elektro26',
+        category: 'elektro',
+        categoryName: 'Elektro velosiped',
+        price: 999.00,
+        oldPrice: null,
+        specs: '26" təkər · Güclü elektrik motoru · Pas pedal dəstəyi',
+        link: 'https://velo.az/index.php?path=1_17&route=product/category'
+      },
+      {
+        id: 'elektro-bike-disiyuan',
+        name: 'Elektro Bike Disiyuan',
+        category: 'elektro',
+        categoryName: 'Elektro velosiped',
+        price: 1799.00,
+        oldPrice: null,
+        specs: 'Yüksək torklu mərkəzi motor · Uzunməsafəli Li-ion batareya',
+        link: 'https://velo.az/index.php?path=1_17&route=product/category'
+      },
+      {
+        id: 'wolf-chain-oil',
+        name: 'Wolf zəncir yağı',
+        category: 'aksesuar',
+        categoryName: 'Aksesuar',
+        price: 2.00,
+        oldPrice: null,
+        specs: 'Bütün mövsümlər üçün qoruyucu zəncir və mexanizm sürtkü yağı',
+        link: 'https://velo.az/'
+      },
+      {
+        id: 'brake-cable',
+        name: 'Əyləc trosu',
+        category: 'hisse',
+        categoryName: 'Ehtiyat hissəsi',
+        price: 1.00,
+        oldPrice: null,
+        specs: 'Paslanmaz polad standart daxili əyləc trosu',
+        link: 'https://velo.az/'
+      }
+    ];
+
+    let currentFilter = 'all';
+    let currentSearchQuery = '';
+    let shoppingCart = [];
+
+    // Initialize cart from localStorage if present
+    try {
+      const savedCart = localStorage.getItem('velo_az_demo_cart');
+      if (savedCart) {
+        shoppingCart = JSON.parse(savedCart);
+      }
+    } catch (e) {}
+
+    // Set Copyright Year
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+    // Render Product Grid
+    function renderProductGrid() {
+      const container = document.getElementById('productGridContainer');
+      if (!container) return;
+
+      const filtered = CATALOG_PRODUCTS.filter(product => {
+        const matchesFilter = currentFilter === 'all' || product.category === currentFilter;
+        const q = currentSearchQuery.trim().toLowerCase();
+        const matchesSearch = !q || 
+          product.name.toLowerCase().includes(q) || 
+          product.categoryName.toLowerCase().includes(q) || 
+          product.specs.toLowerCase().includes(q);
+        return matchesFilter && matchesSearch;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 48px 16px; color: var(--muted);" class="glass">
+            <div style="font-size: 2rem; margin-bottom: 8px;">🔍</div>
+            <h4 style="font-size: 1.15rem; margin-bottom: 6px;">Axtarışa uyğun məhsul tapılmadı</h4>
+            <p style="font-size: 0.85rem;">Zəhmət olmasa başqa kateqoriya seçin və ya axtarış sözünü dəyişdirin.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <article class="glass product-card reveal">
+          <div>
+            <div class="product-top">
+              <span class="product-tag">${item.categoryName}</span>
+              <span class="product-badge-stock">Mövcuddur</span>
+            </div>
+            <h3>${item.name}</h3>
+            <p class="product-specs">${item.specs}</p>
+          </div>
+
+          <div class="product-bottom">
+            <div class="price-wrap">
+              <div class="price tabular-nums">${item.price.toFixed(2)} ₼</div>
+              ${item.oldPrice ? `<span class="oldprice tabular-nums">${item.oldPrice.toFixed(2)} ₼</span>` : ''}
+            </div>
+            <div class="prod-actions">
+              <button class="btn-add-cart" onclick="addToCart('${item.id}')" title="Səbətə at">
+                + Səbətə at
+              </button>
+              <a href="${item.link}" target="_blank" rel="noopener" class="btn-link-out" title="Rəsmi səhifə">
+                ↗
+              </a>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // Filter by Category Button
+    function filterCatalogCategory(category) {
+      currentFilter = category;
+
+      // Update button visual states
+      document.querySelectorAll('#categoryFilterPills .filter-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-filter') === category);
+      });
+
+      renderProductGrid();
+
+      // Smooth scroll to catalog section
+      const catalogSection = document.getElementById('mehsullar');
+      if (catalogSection) {
+        catalogSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    // Direct filter click from Kateqoriyalar cards
+    function highlightFilter(event, category) {
+      // If user holds Ctrl/Cmd or wants to open real link, let it work, else filter locally
+      if (!event.ctrlKey && !event.metaKey && window.innerWidth > 600) {
+        event.preventDefault();
+        filterCatalogCategory(category);
+      }
+    }
+
+    // Search bar listener
+    function handleCatalogSearch(query) {
+      currentSearchQuery = query;
+      renderProductGrid();
+    }
+
+    // Cart Operations
+    function addToCart(productId) {
+      const product = CATALOG_PRODUCTS.find(p => p.id === productId);
+      if (!product) return;
+
+      shoppingCart.push(product);
+      saveCart();
+      updateCartUI();
+      toggleCartDrawer(true);
+    }
+
+    function removeFromCart(index) {
+      shoppingCart.splice(index, 1);
+      saveCart();
+      updateCartUI();
+    }
+
+    function saveCart() {
+      try {
+        localStorage.setItem('velo_az_demo_cart', JSON.stringify(shoppingCart));
+      } catch (e) {}
+    }
+
+    function toggleCartDrawer(forceOpen) {
+      const overlay = document.getElementById('cartDrawerOverlay');
+      if (!overlay) return;
+
+      if (forceOpen === true) {
+        overlay.classList.add('active');
+      } else if (forceOpen === false) {
+        overlay.classList.remove('active');
+      } else {
+        overlay.classList.toggle('active');
+      }
+    }
+
+    function updateCartUI() {
+      const badge = document.getElementById('cartBadgeCount');
+      const list = document.getElementById('cartItemsList');
+      const total = document.getElementById('cartTotalPrice');
+
+      if (badge) badge.textContent = shoppingCart.length;
+
+      const sum = shoppingCart.reduce((acc, item) => acc + item.price, 0);
+      if (total) total.textContent = sum.toFixed(2) + ' ₼';
+
+      if (!list) return;
+
+      if (shoppingCart.length === 0) {
+        list.innerHTML = `
+          <div style="text-align: center; padding: 48px 0; color: var(--muted);">
+            <div style="font-size: 2.2rem; margin-bottom: 8px;">🛒</div>
+            <p>Səbətiniz hələlik boşdur.</p>
+          </div>
+        `;
+        return;
+      }
+
+      list.innerHTML = shoppingCart.map((item, idx) => `
+        <div class="cart-item">
+          <div>
+            <div class="cart-item-title">${item.name}</div>
+            <div class="cart-item-price tabular-nums">${item.price.toFixed(2)} ₼</div>
+          </div>
+          <button class="cart-item-del" onclick="removeFromCart(${idx})" title="Məhsulu sil">Sil</button>
+        </div>
+      `).join('');
+    }
+
+    function checkoutWhatsAppOrder() {
+      if (shoppingCart.length === 0) {
+        alert('Səbətiniz boşdur! Zəhmət olmasa əvvəlcə məhsul seçin.');
+        return;
+      }
+
+      const sum = shoppingCart.reduce((acc, item) => acc + item.price, 0);
+      const itemsList = shoppingCart.map((item, i) => `${i + 1}. ${item.name} (${item.price.toFixed(2)} ₼)`).join('\n');
+      const message = `Salam VELO.az! Redizayn platformasından sifariş göndərirəm:\n\n${itemsList}\n\nCəmi: ${sum.toFixed(2)} AZN\nÇatdırılma və sifarişi dəqiqləşdirmək üçün əlaqə saxlamağınızı xahiş edirəm.`;
+
+      const waUrl = `https://wa.me/994703129549?text=${encodeURIComponent(message)}`;
+      window.open(waUrl, '_blank');
+    }
+
+    // Bike Frame Size Calculator
+    function calculateBikeSize(heightVal) {
+      const h = parseInt(heightVal, 10);
+      const display = document.getElementById('heightSliderValue');
+      const frameEl = document.getElementById('calcFrameSize');
+      const inchEl = document.getElementById('calcFrameInch');
+      const wheelEl = document.getElementById('calcWheelSize');
+
+      if (display) display.textContent = `${h} sm`;
+
+      let frameName = 'M (Medium)';
+      let frameInch = '17" - 18" (43 - 47 sm)';
+      let wheelSize = '29 düym';
+
+      if (h < 155) {
+        frameName = 'XS (Extra Small)';
+        frameInch = '13" - 14" (33 - 36 sm)';
+        wheelSize = '24" / 26" düym';
+      } else if (h <= 168) {
+        frameName = 'S (Small)';
+        frameInch = '15" - 16" (38 - 41 sm)';
+        wheelSize = '27.5 düym';
+      } else if (h <= 178) {
+        frameName = 'M (Medium)';
+        frameInch = '17" - 18" (43 - 47 sm)';
+        wheelSize = '29 düym';
+      } else if (h <= 188) {
+        frameName = 'L (Large)';
+        frameInch = '19" - 20" (48 - 52 sm)';
+        wheelSize = '29 düym';
+      } else {
+        frameName = 'XL (Extra Large)';
+        frameInch = '21" - 22" (53 - 56 sm)';
+        wheelSize = '29 düym';
+      }
+
+      if (frameEl) frameEl.textContent = frameName;
+      if (inchEl) inchEl.textContent = frameInch;
+      if (wheelEl) wheelEl.textContent = wheelSize;
+    }
+
+    // Mobile Hamburger Menu Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    if (menuToggle && navLinks) {
+      menuToggle.addEventListener('click', () => {
+        const isOpen = navLinks.classList.toggle('open');
+        menuToggle.setAttribute('aria-expanded', String(isOpen));
+        menuToggle.textContent = isOpen ? '✕' : '☰';
+      });
+
+      // Close menu when clicking any nav link
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('open');
+          menuToggle.setAttribute('aria-expanded', 'false');
+          menuToggle.textContent = '☰';
+        });
+      });
+    }
+
+    // Sticky Header visual border switch on scroll
+    window.addEventListener('scroll', () => {
+      const header = document.getElementById('siteHeader');
+      if (header) {
+        header.classList.toggle('scrolled', window.scrollY > 40);
+      }
+    }, { passive: true });
+
+    // GSAP ScrollTrigger & Bulletproof Motion Engine
+    function initMotion() {
+      const isReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (isReduced) return;
+
+      const bgVideo = document.getElementById('backgroundVideo');
+
+      // Check if GSAP loaded from CDN
+      if (window.gsap && window.ScrollTrigger) {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // GSAP smooth parallax scale, opacity dim, and blur effect during scroll
+        if (bgVideo) {
+          gsap.to(bgVideo, {
+            scale: 1.20,
+            opacity: 0.42,
+            filter: "blur(7px)",
+            ease: "none",
+            scrollTrigger: {
+              trigger: document.body,
+              start: "top top",
+              end: "bottom bottom",
+              scrub: 1.2
+            }
+          });
+        }
+
+        // Section header and card reveals
+        gsap.utils.toArray('.reveal').forEach(el => {
+          gsap.fromTo(el, 
+            { opacity: 0.2, y: 18 },
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: el,
+                start: "top 92%",
+                toggleActions: "play none none none",
+                once: true
+              }
+            }
+          );
+        });
+      } else {
+        // Fallback if GSAP is unavailable
+        const onScrollFallback = () => {
+          const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+          const scrollPct = Math.min(1, window.scrollY / maxScroll);
+
+          if (bgVideo) {
+            bgVideo.style.transform = `scale(${1.02 + scrollPct * 0.16})`;
+            bgVideo.style.opacity = `${1 - scrollPct * 0.55}`;
+          }
+
+          document.querySelectorAll('.reveal').forEach(el => {
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight * 0.92) {
+              el.style.opacity = '1';
+              el.style.transform = 'translateY(0)';
+            }
+          });
+        };
+
+        window.addEventListener('scroll', onScrollFallback, { passive: true });
+        onScrollFallback();
+      }
+    }
+
+    // Initialize application immediately on DOMContentLoaded
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProductGrid();
+      updateCartUI();
+      calculateBikeSize(175);
+
+      // Safe video playback handler
+      const video = document.getElementById('backgroundVideo');
+      if (video) {
+        const playPromise = video.play();
+        if (playPromise && playPromise.catch) {
+          playPromise.catch(() => {
+            // Autoplay blocked by browser policy; stays muted
+          });
+        }
+      }
+
+      // Initialize motion safely
+      initMotion();
+    });
+
+    // Hash anchor scroll compensation
+    if (window.location.hash) {
+      setTimeout(() => {
+        const target = document.querySelector(window.location.hash);
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 200);
+    }
+  </script>
+</body>
+</html>
